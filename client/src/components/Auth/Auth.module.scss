@@ -1,11 +1,22 @@
+@import '../../CONST.scss';
+
 .Auth {
-
-    background: #007236;
+    background: $main-bg-color;
     width: 100%;
-    // height: 100vh;
+    height: 100vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 
-    h1 {
-        font-weight: bold;
-        color: red;
+    .logo {
+        width: calc(82px * 3);
+        height: calc(139px * 3);
+        background: url('../../assets/logo.svg') no-repeat;
+        background-size: contain;
+    }
+    .btnSend {
+        width: 100%;
     }
 }

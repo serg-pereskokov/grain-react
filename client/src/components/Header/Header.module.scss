@@ -1,0 +1,13 @@
+@import '../../CONST.scss';
+
+.Header {
+    background: $main-bg-color;
+
+    .logo {
+        color: #fff;
+        font-weight: bold;
+    }
+    .logout{
+        color: #fff;
+    }
+}
