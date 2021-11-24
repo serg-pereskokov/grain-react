@@ -28,8 +28,9 @@
         justify-self: flex-end;
         align-self: center;
         margin-right: 15px;
-        font-size: 40px;
+        font-size: $icon-size;
         cursor: pointer;
         color: #fff;
+        user-select: none;
     }
 }

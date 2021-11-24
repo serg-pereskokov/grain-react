@@ -13,7 +13,8 @@ function App() {
       login: null,
       password: null
     },
-    userType: null
+    userType: null,
+    showMenu: false
   })
 
   return (

@@ -1,15 +1,9 @@
 import React from 'react'
 import { Header } from '../Header/Header'
 import { Map } from '../Map/Map'
-// import styles from './Content.module.scss'
+import { RightMenu } from '../RightMenu/RightMenu'
 
 const Content = props => {
-
-
-  const [state, setState] = props.state
-
-  
-  console.log(state);
 
   const theme = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -47,8 +41,8 @@ const Content = props => {
                 state={props.state}
             />
             {
-                state.showMenu
-                ? <div>12</div>
+                props.state[0].showMenu
+                ? <RightMenu state={props.state} />
                 : null
             }
             <Map 

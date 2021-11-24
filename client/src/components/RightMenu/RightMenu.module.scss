@@ -1,0 +1,54 @@
+@import '../../CONST.scss';
+
+.RightMenu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 70px;
+    height: calc(100vh - 50px);
+    z-index: $z-index-right-menu;
+    right: 0;
+    top: 50px;
+    background: $main-bg-color;
+    border-top: 2px solid rgba(255,255,255,.5);
+    color: #fff;
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        align-items: center;
+        user-select: none;
+        flex-grow: 1;
+        margin: 0;
+        padding: 0;
+        padding-top: 10px;
+
+        li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+
+            span {
+                font-size: $icon-size;
+            }
+        }
+    }
+
+    .btnExit {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        align-items: center;
+        user-select: none;
+        cursor: pointer;
+        justify-self: end;
+        margin-bottom: 15px;
+
+        .exit {
+            font-size: $icon-size;
+        }
+    }
+}   
