@@ -1,8 +1,15 @@
 import React from 'react'
 import { Header } from '../Header/Header'
 import { Map } from '../Map/Map'
+// import styles from './Content.module.scss'
 
 const Content = props => {
+
+
+  const [state, setState] = props.state
+
+  
+  console.log(state);
 
   const theme = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -39,6 +46,11 @@ const Content = props => {
             <Header 
                 state={props.state}
             />
+            {
+                state.showMenu
+                ? <div>12</div>
+                : null
+            }
             <Map 
                 initPosition={initPosition}
                 multiPolygon={multiPolygon}

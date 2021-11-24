@@ -2,12 +2,34 @@
 
 .Header {
     background: $main-bg-color;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
 
     .logo {
         color: #fff;
         font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center ;
+        margin-left: 15px;
+        cursor: default;
     }
-    .logout{
+    .logoMob {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background: url('../../assets/logo-mob.svg') no-repeat;
+        background-size: contain;
+    }
+    .menu {
+        display: flex;
+        justify-self: flex-end;
+        align-self: center;
+        margin-right: 15px;
+        font-size: 40px;
+        cursor: pointer;
         color: #fff;
     }
 }

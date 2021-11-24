@@ -8,11 +8,12 @@ function App() {
   const [state, setState] = useState({
     login: 'admin',
     password: 'admin',
-    auth: localStorage.getItem('auth') || false,
+    auth: JSON.parse(localStorage.getItem('auth')) || false,
     form: {
       login: null,
       password: null
-    }
+    },
+    userType: null
   })
 
   return (

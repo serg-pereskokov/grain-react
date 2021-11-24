@@ -36,7 +36,8 @@ const Auth = props => {
             setState(() => {
                 return {
                     ...state,
-                    auth: true
+                    auth: true,
+                    userType: login
                 }
             })
 
