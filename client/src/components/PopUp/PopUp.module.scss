@@ -1,0 +1,53 @@
+@import '../../CONST.scss';
+
+.PopUp {
+    display: flex;
+    position: absolute;
+    z-index: $z-index-right-menu + 1;
+    width: 360px;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    background: $main-bg-color;
+    padding: 10px;
+
+    .popHeader {
+        border-bottom: 2px solid rgba(255,255,255,.5);
+        display: flex;
+        justify-content: space-between;
+
+        h2 {
+            font-size: 1em;
+            color: #fff;
+            user-select: none;
+        }
+
+        i {
+            color: #fff;
+            user-select: none;
+            cursor: pointer;
+
+            &:active {
+                transform: scale(.8);
+            }
+        }
+    }
+
+    .popBody {
+
+        span {
+            color: #fff;
+            font-size: 12px;
+        }
+        .dateInputs {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            i {
+                color: #fff;
+            }
+        }
+    }
+}

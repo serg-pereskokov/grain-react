@@ -26,9 +26,13 @@ const RightMenu = props => {
     return (
         <div className={styles.RightMenu}>
             <ul>
-                <li>
+                <li onClick={props.onSearch}>
                     <span className={`material-icons ${styles.exit}`}>directions_car</span>
                     Отследить
+                </li>
+                <li className={`mt-3`}>
+                    <span className={`material-icons ${styles.exit}`}>local_shipping</span>
+                    Отгрузка
                 </li>
             </ul>
             <div className={styles.btnExit} onClick={exitHandler}>

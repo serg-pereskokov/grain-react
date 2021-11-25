@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Header } from '../Header/Header'
 import { Map } from '../Map/Map'
 import { RightMenu } from '../RightMenu/RightMenu'
+import { PopUp } from '../PopUp/PopUp'
 
 const Content = props => {
+
+  const [pop, setPop] = useState({isOpen: false})
 
   const theme = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -32,6 +35,15 @@ const Content = props => {
       [50.355420, 31.880327]
     ]
   ]
+  
+  const searchPopHandler = () => {
+    setPop(() => {
+      return {
+        ...pop,
+        isOpen: !pop.isOpen
+      }
+    })
+  }
 
   const initPosition = [49.447767, 31.409793]
 
@@ -42,7 +54,7 @@ const Content = props => {
             />
             {
                 props.state[0].showMenu
-                ? <RightMenu state={props.state} />
+                ? <RightMenu state={props.state} onSearch={searchPopHandler}/>
                 : null
             }
             <Map 
@@ -50,6 +62,14 @@ const Content = props => {
                 multiPolygon={multiPolygon}
                 theme={theme}
             />
+            {
+              pop.isOpen
+              ? <PopUp 
+                  title='Выбор машины для отслеживания' 
+                  onClose={searchPopHandler}
+                />
+              : null
+            }
         </>
     );
 }
