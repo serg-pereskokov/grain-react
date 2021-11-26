@@ -61,12 +61,14 @@ const Content = props => {
                 initPosition={initPosition}
                 multiPolygon={multiPolygon}
                 theme={theme}
+                state={[pop, setPop]}
             />
             {
               pop.isOpen
               ? <PopUp 
                   title='Выбор машины для отслеживания' 
                   onClose={searchPopHandler}
+                  state={[pop, setPop]}
                 />
               : null
             }

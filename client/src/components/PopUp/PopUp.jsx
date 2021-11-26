@@ -1,12 +1,11 @@
 import React, { useState } from "react"
 import styles from "./PopUp.module.scss"
 import { Loader } from '../Loader/Loader'
-// import axios from 'axios'
+import axios from 'axios'
 
 const PopUp = props => {
     
     // Backup sql 04.01.2021 - 04.02.2021
-
 
     const date = new Date()
 
@@ -14,8 +13,10 @@ const PopUp = props => {
         mobitelId: null,
         startDate: toInputDateFormat(date, 1),
         endDate: toInputDateFormat(date),
-        loader: false
+        loader: false,
+        sqlDB: 'mca_dispatcher'
     })
+    const [contentState, setContentState] = props.state;
 
     function toInputDateFormat(date, opt = 0) {
         let formatedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - opt}`
@@ -52,7 +53,7 @@ const PopUp = props => {
 
     }
 
-    const getDataHandler = e => {
+    const getDataHandler = async e => {
         e.preventDefault()
         
         if (fromState.mobitelId === null || fromState.mobitelId === '') console.log('Add a mobitelId');
@@ -65,15 +66,43 @@ const PopUp = props => {
                 }
             })
 
-            const data = {
-                mobitelId: fromState.mobitelId,
+            const payload = {
+                mobitelId: fromState.mobitelId*1,
                 startDate: new Date(fromState.startDate).getTime(),
-                endDate: new Date(fromState.endDate).getTime()
+                endDate: new Date(fromState.endDate).getTime(),
+                sqlDB: fromState.sqlDB
             }
 
-            console.log(data);
+            try {
+                let {data} = await axios.post('/api/getCar', payload)
+                console.log(data);
+                setFromState(() => {
+                    return {
+                        ...fromState,
+                        loader: false
+                    }
+                })
 
+                setContentState(() => {
+                    return {
+                        ...contentState, 
+                        getCar: {
+                            data
+                        }
+                    }
+                })
 
+                props.onClose()
+
+            } catch(e) {
+                console.log(e);
+                setFromState(() => {
+                    return {
+                        ...fromState,
+                        loader: false
+                    }
+                })
+            }
         }
     }
 
