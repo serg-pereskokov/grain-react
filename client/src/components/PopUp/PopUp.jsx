@@ -1,133 +1,120 @@
 import React, { useState } from "react"
 import styles from "./PopUp.module.scss"
+import { toInputDateFormat } from "../../utils/utils"
+import { connect } from 'react-redux'
+import { getData } from "../../store/actions/actions"
 import { Loader } from '../Loader/Loader'
-import axios from 'axios'
+// import axios from 'axios'
 
 const PopUp = props => {
-    
+
     // Backup sql 04.01.2021 - 04.02.2021
 
     const date = new Date()
 
-    const [fromState, setFromState] = useState({
-        mobitelId: null,
-        startDate: toInputDateFormat(date, 1),
-        endDate: toInputDateFormat(date),
-        loader: false,
-        sqlDB: 'mca_dispatcher'
+    const [state, setState] = useState({
+        titles: {
+            carView: 'Выбор машины для отслеживания',
+            shnakView: 'Выбор шнека для отгрузки'
+        },
+        formControls: {
+            mobitelId: null,
+            startDate: toInputDateFormat(date, 1),
+            endDate: toInputDateFormat(date),
+            sqlDB: 'mca_dispatcher'
+        }
     })
-    const [contentState, setContentState] = props.state;
 
-    function toInputDateFormat(date, opt = 0) {
-        let formatedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - opt}`
-        return formatedDate
+    let title = state.titles[props.title]
+
+    const formControlsHandler = ({target}) => {
+        setState(() => {
+            return {
+                ...state,
+                formControls: {
+                    ...state.formControls,
+                    [target.name]: target.value
+                }
+            }
+        })
     }
 
-    const formHandler = ({target}) => {
-        if (target.name === 'mobitelId') {
-            setFromState(() => {
-                return {
-                    ...fromState,
-                    mobitelId: target.value
-                }
-            })
-        }
-
-        if (target.name === 'start') {
-            setFromState(() => {
-                return {
-                    ...fromState,
-                    startDate: target.value
-                }
-            })
-        }
-
-        if (target.name === 'end') {
-            setFromState(() => {
-                return {
-                    ...fromState,
-                    endDate: target.value
-                }
-            })
-        }
-
-    }
-
-    const getDataHandler = async e => {
+    const getDataHandler = e => {
         e.preventDefault()
-        
-        if (fromState.mobitelId === null || fromState.mobitelId === '') console.log('Add a mobitelId');
+        let payload = {...state.formControls}
+        if (payload.mobitelId === null || payload.mobitelId === '') 
+            console.log('Add a mobitelID');
         else {
-            
-            setFromState(() => {
-                return {
-                    ...fromState,
-                    loader: true
-                }
-            })
-
-            const payload = {
-                mobitelId: fromState.mobitelId*1,
-                startDate: new Date(fromState.startDate).getTime(),
-                endDate: new Date(fromState.endDate).getTime(),
-                sqlDB: fromState.sqlDB
+            payload = {
+                mobitelId: payload.mobitelId*1,
+                startDate: new Date(payload.startDate).getTime(),
+                endDate: new Date(payload.endDate).getTime(),
+                sqlDB: payload.sqlDB
             }
 
-            try {
-                let {data} = await axios.post('/api/getCar', payload)
-                console.log(data);
-                setFromState(() => {
-                    return {
-                        ...fromState,
-                        loader: false
-                    }
-                })
-
-                setContentState(() => {
-                    return {
-                        ...contentState, 
-                        getCar: {
-                            data
-                        }
-                    }
-                })
-
-                props.onClose()
-
-            } catch(e) {
-                console.log(e);
-                setFromState(() => {
-                    return {
-                        ...fromState,
-                        loader: false
-                    }
-                })
-            }
+            props.getData(payload)
         }
     }
+
+    //         try {
+    //             let {data} = await axios.post('/api/getCar', payload)
+    //             console.log(data);
+    //             setFromState(() => {
+    //                 return {
+    //                     ...fromState,
+    //                     loader: false
+    //                 }
+    //             })
+
+    //             setContentState(() => {
+    //                 return {
+    //                     ...contentState, 
+    //                     getCar: {
+    //                         data
+    //                     }
+    //                 }
+    //             })
+
+    //             props.onClose()
+
+    //         } catch(e) {
+    //             console.log(e);
+    //             setFromState(() => {
+    //                 return {
+    //                     ...fromState,
+    //                     loader: false
+    //                 }
+    //             })
+    //         }
+    //     }
+    // }
 
     return (
         <div className={styles.PopUp}>
             <div className={styles.popHeader}>
-                <h2 className={styles.title}>{ props.title }</h2>
-                <i className={`material-icons`} onClick={props.onClose}>close</i>
+                <h2 className={styles.title}>{title}</h2>
+                <i className={`material-icons`}>close</i>
             </div>
             <div className={styles.popBody}>
                 {
-                    fromState.loader
+                    props.loader
                     ? <Loader />
                     : <form className={`mt-3`}>
-                        <input type="text" className='form-control' placeholder='ID машины' name="mobitelId" onChange={formHandler}/>
+                        <input 
+                            type="text"
+                            className='form-control'
+                            placeholder='ID машины'
+                            name="mobitelId" 
+                            onChange={formControlsHandler} />
                         <div className={`mt-2`}>
-                            <span>Выбор периода</span>
                             <div className={styles.dateInputs}>
                                 <input 
                                     type="date"
                                     className='form-control'
                                     placeholder='Дата'
                                     // defaultValue={fromState.startDate}
-                                    name="start"
-                                    onChange={formHandler} 
+                                    name="startDate"
+                                    onChange={formControlsHandler} 
                                     min="2021-01-04"
                                     max="2021-02-04"
                                 />
@@ -137,8 +124,8 @@ const PopUp = props => {
                                     className='form-control'
                                     placeholder='Дата'
                                     // defaultValue={fromState.endDate}
-                                    name="end"
-                                    onChange={formHandler}
+                                    name="endDate"
+                                    onChange={formControlsHandler}
                                     min="2021-01-04"
                                     max="2021-02-04"
                                 />
@@ -152,4 +139,16 @@ const PopUp = props => {
     )
 }
 
-export { PopUp }
+const mapStateToProps = (state) => {
+    return {
+        title: state.rightMenu.options,
+        loader: state.popUp.loader
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getData: (payload) => dispatch(getData(payload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PopUp)

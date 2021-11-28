@@ -1,31 +1,37 @@
-import { useState } from 'react'
-import { Auth } from './components/Auth/Auth';
-import { Content } from './components/Content/Content'
+import Auth from './components/Auth/Auth'
+import Content from './components/Content/Content'
 import './App.css';
+import { connect } from 'react-redux'
 
-function App() {
+const App = ({auth}) => {
 
-  const [state, setState] = useState({
-    login: 'admin',
-    password: 'admin',
-    auth: JSON.parse(localStorage.getItem('auth')) || false,
-    form: {
-      login: null,
-      password: null
-    },
-    userType: null,
-    showMenu: false
-  })
+  // const [state, setState] = useState({
+  //   login: 'admin',
+  //   password: 'admin',
+  //   auth: JSON.parse(localStorage.getItem('auth')) || false,
+  //   form: {
+  //     login: null,
+  //     password: null
+  //   },
+  //   userType: null,
+  //   showMenu: false
+  // })
 
   return (
     <div className='App'>
-      { state.auth
-        ? <Content state={[state, setState]} />
-        : <Auth state={[state, setState]} />
+      { auth
+        ? <Content />
+        : <Auth />
       }
       
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.login.auth
+  }
+}
+
+export default connect(mapStateToProps)(App);

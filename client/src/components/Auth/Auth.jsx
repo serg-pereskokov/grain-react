@@ -1,47 +1,34 @@
-import React from "react"
+import React, { useState } from "react"
 import styles from './Auth.module.scss'
+import { connect } from 'react-redux'
+import { login } from '../../store/actions/actions'
 
 const Auth = props => {
-    const [state, setState] = props.state
+    const [state, setState] = useState({
+        username: null,
+        password: null
+    })
 
-    const loginHandleChange = e => {
+    const formControlsChange = e => {
+        const type = e.target.name
         setState(() => {
             return {
                 ...state,
-                form: {
-                    ...state.form,
-                    login: e.target.value
-                }
-            }
-        })
-    }
-
-    const passwordHandleChange = e => {
-        setState(() => {
-            return {
-                ...state,
-                form: {
-                    ...state.form,
-                    password: e.target.value
-                }
+                [type]: e.target.value
             }
         })
     }
  
     const enterHandler = e => {
         e.preventDefault()
-        const {login, password} = state.form;
 
-        if ( login === state.login && password === state.password ) {
-            setState(() => {
-                return {
-                    ...state,
-                    auth: true,
-                    userType: login
-                }
-            })
+        for (let [k, v] of Object.entries(props.userType)) {
+            if (v.username === state.username && v.password === state.password) {
 
-            localStorage.setItem('auth', true)
+                props.login(k)
+                sessionStorage.setItem('auth', true)
+                sessionStorage.setItem('loginAs', k)
+            }
         }
     }
 
@@ -49,12 +36,37 @@ const Auth = props => {
         <div className={styles.Auth}>
             <i className={styles.logo} />
             <form>
-                <input type="text" className="form-control mb-2" placeholder="Имя пользователя" onChange={loginHandleChange} />
-                <input type="text" className="form-control mb-2" placeholder="Пароль" onChange={passwordHandleChange} />
-                <button onClick={enterHandler} className={`btn btn-primary ${styles.btnSend}`}>Войти</button>
+                <input 
+                    type="text" 
+                    name="username"
+                    className="form-control mb-2" 
+                    placeholder="Имя пользователя" 
+                    onChange={formControlsChange} />
+                <input 
+                    type="password"
+                    name="password"
+                    className="form-control mb-2"
+                    placeholder="Пароль" 
+                    onChange={formControlsChange} />
+                <button 
+                    className={`btn btn-primary ${styles.btnSend}`}
+                    onClick={enterHandler}
+                >Войти</button>
             </form>
         </div>
     )
 }
 
-export { Auth }
+const mapStateToProps = ({ userType }) => {
+    return {
+        userType
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: loginAs => dispatch(login(loginAs))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)
