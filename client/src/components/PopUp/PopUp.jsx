@@ -2,9 +2,8 @@ import React, { useState } from "react"
 import styles from "./PopUp.module.scss"
 import { toInputDateFormat } from "../../utils/utils"
 import { connect } from 'react-redux'
-import { getData } from "../../store/actions/actions"
+import { getData, closeHandler } from "../../store/actions/actions"
 import { Loader } from '../Loader/Loader'
-// import axios from 'axios'
 
 const PopUp = props => {
 
@@ -56,44 +55,11 @@ const PopUp = props => {
         }
     }
 
-    //         try {
-    //             let {data} = await axios.post('/api/getCar', payload)
-    //             console.log(data);
-    //             setFromState(() => {
-    //                 return {
-    //                     ...fromState,
-    //                     loader: false
-    //                 }
-    //             })
-
-    //             setContentState(() => {
-    //                 return {
-    //                     ...contentState, 
-    //                     getCar: {
-    //                         data
-    //                     }
-    //                 }
-    //             })
-
-    //             props.onClose()
-
-    //         } catch(e) {
-    //             console.log(e);
-    //             setFromState(() => {
-    //                 return {
-    //                     ...fromState,
-    //                     loader: false
-    //                 }
-    //             })
-    //         }
-    //     }
-    // }
-
     return (
         <div className={styles.PopUp}>
             <div className={styles.popHeader}>
                 <h2 className={styles.title}>{title}</h2>
-                <i className={`material-icons`}>close</i>
+                <i className={`material-icons`} onClick={props.closeHandler}>close</i>
             </div>
             <div className={styles.popBody}>
                 {
@@ -115,7 +81,6 @@ const PopUp = props => {
                                     // defaultValue={fromState.startDate}
                                     name="startDate"
                                     onChange={formControlsHandler} 
-                                    min="2021-01-04"
                                     max="2021-02-04"
                                 />
                                 <i className="material-icons">swap_horiz</i>
@@ -126,7 +91,6 @@ const PopUp = props => {
                                     // defaultValue={fromState.endDate}
                                     name="endDate"
                                     onChange={formControlsHandler}
-                                    min="2021-01-04"
                                     max="2021-02-04"
                                 />
                             </div>
@@ -147,7 +111,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        getData: (payload) => dispatch(getData(payload))
+        getData: (payload) => dispatch(getData(payload)),
+        closeHandler: () => dispatch(closeHandler())
     }
 }
 

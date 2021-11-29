@@ -1,54 +1,37 @@
 import React from "react"
-import { MapContainer, TileLayer, Polyline, useMap, useMapEvents, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer, Polyline, useMap, Marker } from 'react-leaflet'
 import './Map.scss'
 import { connect } from 'react-redux'
 
 const Map = props => {
-    // const [stateMap, setStateMap] = useState({
-    //     zoom: 7,
-    //     carPolyline: null
-    // })
-
-
-    // const [contentState] = props.state;
-
-    // useEffect(() => {
-        
-    // })
-
-    // if (contentState.getCar) {
-    //     // const data = [...contentState.getCar.data]
-    //     // let carPolyline = data.map( item => {
-    //     //    return item.coords
-    //     // })
-
-    //     // setStateMap(() => {
-    //     //     return {
-    //     //         ...setStateMap,
-    //     //         carPolyline
-    //     //     }
-    //     // })
-    //     setStateMap(() => {
-    //         return {
-    //             ...stateMap,
-    //             zoom: 10
-    //         }
-    //     })
-    // }
 
     const Test = () => {
         const map = useMap()
-        // const events = useMapEvents({
-        //     baselayerchange() {
-        //         events.flyTo(props.latlng[0], events.getZoom())
-        //     }
-        // })
 
         console.log(props.center);
         map.flyTo( props.center, props.zoom)
 
         console.log('map center: ', map.getCenter());
         return null
+    }
+
+    console.log(props.latlgn);
+
+    const driveCarAnimate = ({ target }) => {
+        let counter = 0
+        // console.log(target.getLatLng());
+        // target.setLatLng([49.447767, 31.409793])
+        // console.log(target.getLatLng());
+        // console.log('click');
+
+        const drive = setInterval(() => {
+            if (counter < props.latlgn.length) {
+                target.setLatLng(props.latlgn[counter])
+                counter++
+                // counter = (counter + 1) % 200;
+            } else clearInterval(drive)
+        }, 1000 / 60)
+
     }
 
     return (
@@ -62,7 +45,9 @@ const Map = props => {
                 props.latlgn
                 ? <>
                     <Polyline pathOptions={{color: 'purple'}} positions={props.latlgn} />
-                    <Marker position={props.startPath} />
+                    <Marker position={props.startPath} draggable={true} eventHandlers={{
+                        click: e => driveCarAnimate(e)
+                    }} />
                     <Marker position={props.endPath} />
                     <Test />
                   </>

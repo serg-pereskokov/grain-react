@@ -2,6 +2,7 @@ import mysql from 'mysql'
 import { sql } from './asyncFunc.js'
 import { SQL_CONN as settings } from '../CONST.js'
 import { trimTimestamp } from './trimTimestamp.js'
+import { arrEq } from '../utils/arrEq.js'
 
 const getCar = async ([payload, res]) => {
     console.log(payload)
@@ -38,12 +39,50 @@ const getCar = async ([payload, res]) => {
         conn.end()
 
         const newData = data.map( item => {
-            return {
-                mobitelId: payload.mobitelId,
-                speed: item.speed,
-                time: item.UnixTime,
-                coords: [item.lat, item.lng]
+            if (item.lat && item.lng) {
+                return {
+                    mobitelId: payload.mobitelId,
+                    speed: item.speed,
+                    time: item.UnixTime,
+                    coords: [item.lat, item.lng]
+                }
             }
+            else {
+                return {
+                    mobitelId: payload.mobitelId,
+                    time: item.UnixTime,
+                    coords: false
+                }
+            }
+        })
+        .filter( (item, index, array) => {
+            if(index == 0 && item.coords) {
+                return {
+                    mobitelId: item.mobitelId,
+                    speed: item.speed,
+                    time: item.time,
+                    coords: item.coords
+                }
+            }
+            else if (item.coords) {
+                return {
+                    mobitelId: item.mobitelId,
+                    speed: item.speed,
+                    time: item.time,
+                    coords: item.coords
+                }
+            }
+            // else if(array[index + 1] !== undefined && item.coords && array[index + 1].coords) {
+            //     let eq = arrEq(item.coords, array[index + 1].coords)
+            //     if (!eq) {
+            //         return {
+            //             mobitelId: item.mobitelId,
+            //             speed: item.speed,
+            //             time: item.time,
+            //             coords: item.coords
+            //         }
+            //     } else return
+            // }
         })
 
         res.json(newData)

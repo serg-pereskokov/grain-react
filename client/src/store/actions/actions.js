@@ -38,7 +38,7 @@ const popUpLoader = () => {
 }
 
 const popUpEnd = data => {
-    let center = data[data.length / 2]
+    let center = data[0]
     let startPath = data[0]
     let endPath = data[data.length - 1]
     return {
@@ -65,10 +65,17 @@ const getData = (payload) => {
     }
 }
 
+const closeHandler = () => {
+    return {
+        type: 'POP_UP_CLOSE'
+    }
+}
+
 export {
     login,
     toggleMenu,
     quit,
     popUpView,
-    getData
+    getData,
+    closeHandler
 }

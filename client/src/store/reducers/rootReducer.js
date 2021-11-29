@@ -71,7 +71,8 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 popUp: {
                     loader: true
-                }
+                },
+                gpsData: null
             }
         case 'POP_UP_END':
             return {
@@ -86,6 +87,20 @@ const rootReducer = (state = initialState, action) => {
                     zoom: action.zoom,
                     startPath: action.startPath,
                     endPath: action.endPath
+                },
+                popUp: {
+                    loader: false
+                }
+            }
+        case 'POP_UP_CLOSE':
+            return {
+                ...state,
+                rightMenu: {
+                    popUpView: false,
+                    options: null
+                },
+                popUp: {
+                    loader: false
                 }
             }
         default:
