@@ -2,6 +2,8 @@ import React from "react"
 import { MapContainer, TileLayer, Polyline, useMap, Marker } from 'react-leaflet'
 import './Map.scss'
 import { connect } from 'react-redux'
+import L from 'leaflet'
+import iconCar from '../../assets/icon-marker-car.svg'
 
 const Map = props => {
 
@@ -14,6 +16,15 @@ const Map = props => {
         console.log('map center: ', map.getCenter());
         return null
     }
+
+    const carIcon = new L.Icon({
+        iconUrl: iconCar,
+        iconRetinaUrl: null,
+        iconAnchor: [30, 75],
+        popupAnchor: null,
+        iconSize: new L.Point(60, 75),
+        className: 'leaflet-div-icon'
+    })
 
     console.log(props.latlgn);
 
@@ -46,8 +57,10 @@ const Map = props => {
                 ? <>
                     <Polyline pathOptions={{color: 'purple'}} positions={props.latlgn} />
                     <Marker position={props.startPath} draggable={true} eventHandlers={{
-                        click: e => driveCarAnimate(e)
-                    }} />
+                            click: e => driveCarAnimate(e)
+                        }} 
+                        icon={carIcon}
+                    />
                     <Marker position={props.endPath} />
                     <Test />
                   </>

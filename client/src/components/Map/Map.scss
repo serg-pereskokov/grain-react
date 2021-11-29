@@ -1,4 +1,10 @@
 .leaflet-container {
     width: 100%;
     height: calc(100vh - 50px);
-  }
+
+    .leaflet-div-icon {
+      border: none;
+      background: none;
+      transition: all .5s linear;
+    }
+}

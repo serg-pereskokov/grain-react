@@ -1,7 +1,7 @@
 const payload = {
     mobitelId: 542,
-    startDate: 1612310400000,
-    endDate: 1612396800000,
+    startDate: 1610323200000,
+    endDate: 1610409600000,
     sqlDB: 'mca_dispatcher'
 }
 
