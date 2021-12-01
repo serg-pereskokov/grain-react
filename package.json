@@ -1,0 +1,23 @@
+{
+  "name": "react-grain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serg-pereskokov/grain-react.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/serg-pereskokov/grain-react/issues"
+  },
+  "homepage": "https://github.com/serg-pereskokov/grain-react#readme",
+  "dependencies": {
+    "concurrently": "^6.4.0"
+  }
+}

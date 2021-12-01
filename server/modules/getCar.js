@@ -32,8 +32,7 @@ const getCar = async ([payload, res]) => {
             AND 
                 datagps.Mobitel_ID = ${payload.mobitelId}
             ORDER BY
-                 datagps.DataGps_ID
-            DESC
+                datagps.UnixTime
         `)
 
         conn.end()
@@ -64,25 +63,25 @@ const getCar = async ([payload, res]) => {
                     coords: item.coords
                 }
             }
-            else if (item.coords) {
-                return {
-                    mobitelId: item.mobitelId,
-                    speed: item.speed,
-                    time: item.time,
-                    coords: item.coords
-                }
-            }
-            // else if(array[index + 1] !== undefined && item.coords && array[index + 1].coords) {
-            //     let eq = arrEq(item.coords, array[index + 1].coords)
-            //     if (!eq) {
-            //         return {
-            //             mobitelId: item.mobitelId,
-            //             speed: item.speed,
-            //             time: item.time,
-            //             coords: item.coords
-            //         }
-            //     } else return
+            // else if (item.coords) {
+            //     return {
+            //         mobitelId: item.mobitelId,
+            //         speed: item.speed,
+            //         time: item.time,
+            //         coords: item.coords
+            //     }
             // }
+            else if(array[index + 1] !== undefined && item.coords && array[index + 1].coords) {
+                let eq = arrEq(item.coords, array[index + 1].coords)
+                if (!eq) {
+                    return {
+                        mobitelId: item.mobitelId,
+                        speed: item.speed,
+                        time: item.time,
+                        coords: item.coords
+                    }
+                } else return
+            }
         })
 
         res.json(newData)

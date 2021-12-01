@@ -2,9 +2,19 @@
     width: 100%;
     height: calc(100vh - 50px);
 
-    .leaflet-div-icon {
+    .leaflet-div-icon-car {
       border: none;
       background: none;
-      transition: all .5s linear;
+      transition: all .3s linear;
+      z-index: 500 !important;
+    }
+
+    
+    .LayersControl{
+      position: absolute;
+      top: 100px;
+      background: #fff;
+      z-index: 1400 !important;
+      cursor: pointer;
     }
 }

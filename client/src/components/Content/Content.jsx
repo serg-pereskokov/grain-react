@@ -9,8 +9,6 @@ const Content = props => {
 
   // const [pop, setPop] = useState({isOpen: false})
 
-  const theme = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-
   // const multiPolygon = [
   //   [
   //     [50.381990, 31.871541],
@@ -59,9 +57,7 @@ const Content = props => {
               ? <PopUp />
               : null
             }
-            <Map
-              theme={theme}
-            />
+            <Map />
             {/*<Map 
                 initPosition={initPosition}
                 multiPolygon={multiPolygon}

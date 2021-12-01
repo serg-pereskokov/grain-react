@@ -1,32 +1,35 @@
-import React from "react"
-import { MapContainer, TileLayer, Polyline, useMap, Marker } from 'react-leaflet'
+import React, { useState } from "react"
+import { MapContainer, TileLayer, Polyline, Marker } from 'react-leaflet'
 import './Map.scss'
 import { connect } from 'react-redux'
-import L from 'leaflet'
-import iconCar from '../../assets/icon-marker-car.svg'
+import { layers } from './utils/layers'
+import { MapFlyTo, MapChangeLayout } from "./MapSettings"
+import { carIcon, endPathIcon } from "./utils/icons"
 
 const Map = props => {
 
-    const Test = () => {
-        const map = useMap()
+    const [baseMap, setBaseMap] = useState(layers('googleSat'))
 
-        console.log(props.center);
-        map.flyTo( props.center, props.zoom)
-
-        console.log('map center: ', map.getCenter());
-        return null
+    const changeLayoutHandler = (e) => {
+        console.log('clicked');
+        console.log(e);
     }
 
-    const carIcon = new L.Icon({
-        iconUrl: iconCar,
-        iconRetinaUrl: null,
-        iconAnchor: [30, 75],
-        popupAnchor: null,
-        iconSize: new L.Point(60, 75),
-        className: 'leaflet-div-icon'
-    })
+    // document.addEventListener('keydown', (e) => {
+    //     console.log(e);
 
-    console.log(props.latlgn);
+    //     if ( e.key === 'Enter') {
+    //         setBaseMap(layers('googleStreets'))
+    //     }
+    // })
+
+    const LayersControl = () => {
+        return (
+            <div className="LayersControl">
+                Change Layer
+            </div>
+        )
+    }
 
     const driveCarAnimate = ({ target }) => {
         let counter = 0
@@ -41,7 +44,7 @@ const Map = props => {
                 counter++
                 // counter = (counter + 1) % 200;
             } else clearInterval(drive)
-        }, 1000 / 60)
+        }, 1000 / 10)
 
     }
 
@@ -51,7 +54,14 @@ const Map = props => {
             zoom={props.zoom}
             scrollWheelZoom={true}
         >   
-            <TileLayer url={props.theme} />
+            {
+                baseMap.subdomains
+                ? <TileLayer url={baseMap.layout} subdomains={baseMap.subdomains} />
+                : <TileLayer url={baseMap.layout}  />
+            }
+            <LayersControl eventHandlers={{
+                click: e => changeLayoutHandler(e)
+            }}/>
             {
                 props.latlgn
                 ? <>
@@ -61,8 +71,8 @@ const Map = props => {
                         }} 
                         icon={carIcon}
                     />
-                    <Marker position={props.endPath} />
-                    <Test />
+                    <Marker position={props.endPath} icon={endPathIcon}/>
+                    <MapFlyTo center={props.center} zoom={props.zoom} />
                   </>
                 : null
             }
