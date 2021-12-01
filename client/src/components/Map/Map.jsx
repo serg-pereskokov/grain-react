@@ -3,32 +3,30 @@ import { MapContainer, TileLayer, Polyline, Marker } from 'react-leaflet'
 import './Map.scss'
 import { connect } from 'react-redux'
 import { layers } from './utils/layers'
-import { MapFlyTo, MapChangeLayout } from "./MapSettings"
+import { MapFlyTo } from "./MapSettings"
 import { carIcon, endPathIcon } from "./utils/icons"
+import { LayersControl } from "./LayersControl"
 
 const Map = props => {
 
-    const [baseMap, setBaseMap] = useState(layers('googleSat'))
+    const [baseMap, setBaseMap] = useState({
+        current: layers('osm'),
+        type: 'osm',
+        change: false
+    })
 
-    const changeLayoutHandler = (e) => {
+    const changeLayoutHandler = () => {
         console.log('clicked');
-        console.log(e);
-    }
+        setBaseMap(() => {
+            return {
+                ...baseMap,
+                current: layers('googleStreets'),
+                type: 'googleStreets',
+                change: true
+            }
+        })
 
-    // document.addEventListener('keydown', (e) => {
-    //     console.log(e);
-
-    //     if ( e.key === 'Enter') {
-    //         setBaseMap(layers('googleStreets'))
-    //     }
-    // })
-
-    const LayersControl = () => {
-        return (
-            <div className="LayersControl">
-                Change Layer
-            </div>
-        )
+        console.log(baseMap.change);
     }
 
     const driveCarAnimate = ({ target }) => {
@@ -42,7 +40,6 @@ const Map = props => {
             if (counter < props.latlgn.length) {
                 target.setLatLng(props.latlgn[counter])
                 counter++
-                // counter = (counter + 1) % 200;
             } else clearInterval(drive)
         }, 1000 / 10)
 
@@ -54,14 +51,17 @@ const Map = props => {
             zoom={props.zoom}
             scrollWheelZoom={true}
         >   
+            <LayersControl click={changeLayoutHandler}/>
             {
-                baseMap.subdomains
-                ? <TileLayer url={baseMap.layout} subdomains={baseMap.subdomains} />
-                : <TileLayer url={baseMap.layout}  />
+                baseMap.current.subdomains
+                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                : <TileLayer url={baseMap.current.layout}  />
             }
-            <LayersControl eventHandlers={{
-                click: e => changeLayoutHandler(e)
-            }}/>
+            {
+                baseMap.change
+                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                : null
+            }
             {
                 props.latlgn
                 ? <>
