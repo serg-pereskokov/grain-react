@@ -113,7 +113,8 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 tileLayer: {
                     layout: action.payload.layout,
-                    subdomains: action.payload.subdomains
+                    subdomains: action.payload.subdomains,
+                    type: action.payload.type
                 }
             }
         default:

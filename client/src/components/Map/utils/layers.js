@@ -22,7 +22,7 @@ const layers = type => {
     }
   }
 
-  return layouts[type]
+  return {...layouts[type], type}
 }
 
 export { layers }

@@ -1,26 +1,19 @@
-import React, { useState } from "react"
-import { MapContainer, TileLayer, Polyline, Marker } from 'react-leaflet'
+import React from "react"
+import { MapContainer, TileLayer, Polyline, Marker, LayersControl } from 'react-leaflet'
 import './Map.scss'
 import { connect } from 'react-redux'
 import { layers } from './utils/layers'
 import { MapFlyTo } from "./MapSettings"
 import { carIcon, endPathIcon } from "./utils/icons"
-import { LayersControl } from "./LayersControl"
+// import { LayersControl } from "./LayersControl"
 import { changeTileLayer } from "../../store/actions/actions"
-
-
-let prevTile = null
 
 const Map = props => {
 
     const changeLayoutHandler = (type) => {
-        console.log('clicked');
-        console.log(type);
-        prevTile = props.tileLayer.layout.concat()
+        // prevTile = props.tileLayer.layout.concat()
         props.changeTileLayer(layers(type))
     }
-
-    console.log(prevTile);
 
     const driveCarAnimate = ({ target }) => {
         let counter = 0
@@ -38,7 +31,36 @@ const Map = props => {
 
     }
 
-    console.log(props.tileLayer);
+    const test = () => {
+        return (
+            <LayersControl position='bottomleft'>
+                <LayersControl.BaseLayer checked name="OpenStreetMap.Mapnik">
+                    <TileLayer url={layers('osm').layout} />
+                </ LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
+                    <TileLayer url={layers('googleSat').layout} subdomains={layers('googleSat').subdomains}/>
+                </ LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
+                    <TileLayer url={layers('googleStreets').layout} subdomains={layers('googleStreets').subdomains} />
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
+                    <TileLayer url={layers('googleHybrid').layout} subdomains={layers('googleHybrid').subdomains} />
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
+                    <TileLayer url={layers('googleTerran').layout} subdomains={layers('googleTerran').subdomains}  />
+                </LayersControl.BaseLayer>
+            </ LayersControl>
+        )
+    }
+
+    // useEffect(() => {
+    //     // console.log('component did mount!!!')
+    //     // console.log(props.tileLayer);
+    //     // return () => {
+    //     //     console.log('component will unmount');
+    //     //     setState(true)
+    //     // }
+    // }, [props.tileLayer])
 
     return (
         <MapContainer 
@@ -46,30 +68,13 @@ const Map = props => {
             zoom={props.zoom}
             scrollWheelZoom={true}
         >   
-            <LayersControl click={changeLayoutHandler}/>
+            {/* <LayersControl click={changeLayoutHandler}/> */}
             {
-                props.tileLayer.subdomains
-                ? <TileLayer url={props.tileLayer.layout} subdomains={props.tileLayer.subdomains} />
-                : <TileLayer url={props.tileLayer.layout}  />
+                test()
+                // props.tileLayer.subdomains
+                // ? <TileLayer url={props.tileLayer.layout} subdomains={props.tileLayer.subdomains} />
+                // : <TileLayer url={props.tileLayer.layout}  />
             }
-            {
-                props.tileLayer.layout !== prevTile
-                ? <TileLayer url={props.tileLayer.layout} subdomains={props.tileLayer.subdomains} />
-                : null
-            }
-            {/* {
-                baseMap.type === 'googleSat'
-                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
-                : baseMap.type === 'googleStreets'
-                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
-                : baseMap.type === 'googleHybrid'
-                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
-                : baseMap.type === 'googleTerran'
-                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
-                : baseMap.type === 'osm'
-                ? <TileLayer url={baseMap.current.layout} />
-                : null
-            } */}
             {
                 props.latlgn
                 ? <>
