@@ -13,28 +13,11 @@ let prevTile = null
 
 const Map = props => {
 
-    // const [baseMap, setBaseMap] = useState({
-    //     current: layers('osm'),
-    //     type: 'osm',
-    //     change: false
-    // })
-
-
     const changeLayoutHandler = (type) => {
         console.log('clicked');
         console.log(type);
-        prevTile = props.tileLayer.layout
+        prevTile = props.tileLayer.layout.concat()
         props.changeTileLayer(layers(type))
-        // setBaseMap(() => {
-        //     return {
-        //         ...baseMap,
-        //         current: layers(type),
-        //         type,
-        //         change: true
-        //     }
-        // })
-
-        // console.log(baseMap.change);
     }
 
     console.log(prevTile);
