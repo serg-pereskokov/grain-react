@@ -6,28 +6,38 @@ import { layers } from './utils/layers'
 import { MapFlyTo } from "./MapSettings"
 import { carIcon, endPathIcon } from "./utils/icons"
 import { LayersControl } from "./LayersControl"
+import { changeTileLayer } from "../../store/actions/actions"
+
+
+let prevTile = null
 
 const Map = props => {
 
-    const [baseMap, setBaseMap] = useState({
-        current: layers('osm'),
-        type: 'osm',
-        change: false
-    })
+    // const [baseMap, setBaseMap] = useState({
+    //     current: layers('osm'),
+    //     type: 'osm',
+    //     change: false
+    // })
 
-    const changeLayoutHandler = () => {
+
+    const changeLayoutHandler = (type) => {
         console.log('clicked');
-        setBaseMap(() => {
-            return {
-                ...baseMap,
-                current: layers('googleStreets'),
-                type: 'googleStreets',
-                change: true
-            }
-        })
+        console.log(type);
+        prevTile = props.tileLayer.layout
+        props.changeTileLayer(layers(type))
+        // setBaseMap(() => {
+        //     return {
+        //         ...baseMap,
+        //         current: layers(type),
+        //         type,
+        //         change: true
+        //     }
+        // })
 
-        console.log(baseMap.change);
+        // console.log(baseMap.change);
     }
+
+    console.log(prevTile);
 
     const driveCarAnimate = ({ target }) => {
         let counter = 0
@@ -45,6 +55,8 @@ const Map = props => {
 
     }
 
+    console.log(props.tileLayer);
+
     return (
         <MapContainer 
             center={props.center}
@@ -53,25 +65,38 @@ const Map = props => {
         >   
             <LayersControl click={changeLayoutHandler}/>
             {
-                baseMap.current.subdomains
-                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
-                : <TileLayer url={baseMap.current.layout}  />
+                props.tileLayer.subdomains
+                ? <TileLayer url={props.tileLayer.layout} subdomains={props.tileLayer.subdomains} />
+                : <TileLayer url={props.tileLayer.layout}  />
             }
             {
-                baseMap.change
-                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                props.tileLayer.layout !== prevTile
+                ? <TileLayer url={props.tileLayer.layout} subdomains={props.tileLayer.subdomains} />
                 : null
             }
+            {/* {
+                baseMap.type === 'googleSat'
+                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                : baseMap.type === 'googleStreets'
+                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                : baseMap.type === 'googleHybrid'
+                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                : baseMap.type === 'googleTerran'
+                ? <TileLayer url={baseMap.current.layout} subdomains={baseMap.current.subdomains} />
+                : baseMap.type === 'osm'
+                ? <TileLayer url={baseMap.current.layout} />
+                : null
+            } */}
             {
                 props.latlgn
                 ? <>
-                    <Polyline pathOptions={{color: 'purple'}} positions={props.latlgn} />
+                    <Polyline pathOptions={{color: 'rgba(252, 115, 3, .7)', weight: 2}} positions={props.latlgn} />
+                    <Marker position={props.endPath} icon={endPathIcon}/>
                     <Marker position={props.startPath} draggable={true} eventHandlers={{
                             click: e => driveCarAnimate(e)
                         }} 
                         icon={carIcon}
                     />
-                    <Marker position={props.endPath} icon={endPathIcon}/>
                     <MapFlyTo center={props.center} zoom={props.zoom} />
                   </>
                 : null
@@ -87,13 +112,14 @@ const mapStateToProps = (state) => {
         zoom: state.map.zoom,
         latlgn: state.gpsData,
         startPath: state.map.startPath,
-        endPath: state.map.endPath
+        endPath: state.map.endPath,
+        tileLayer: state.tileLayer
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        changeTileLayer: (payload) => dispatch(changeTileLayer(payload))
     }
 }
 

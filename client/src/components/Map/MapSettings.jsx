@@ -5,7 +5,7 @@ const MapFlyTo = props => {
     const map = useMap()
 
     console.log(props.center);
-    map.flyTo( props.center, props.zoom)
+    map.setView( props.center, props.zoom)
 
     console.log('map center: ', map.getCenter());
 

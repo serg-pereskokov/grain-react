@@ -35,6 +35,26 @@ const getCar = async ([payload, res]) => {
                 datagps.UnixTime
         `)
 
+        if ( data.length === 0 ) {
+            data = await sql(conn, `
+                SELECT
+                    ROUND(datagps64.Longitude / 10000000, 8) as lng,
+                    ROUND(datagps64.Latitude / 10000000, 8) as lat,
+                    datagps64.UnixTime,
+                    datagps64.Speed
+                FROM 
+                    datagps64
+                WHERE 
+                    datagps64.UnixTime >= ${trimTimestamp(payload.startDate)}
+                AND 
+                    datagps64.UnixTime <= ${trimTimestamp(payload.endDate)}
+                AND 
+                    datagps64.Mobitel_ID = ${payload.mobitelId}
+                ORDER BY
+                    datagps64.UnixTime
+            `)
+        }
+
         conn.end()
 
         const newData = data.map( item => {
@@ -63,14 +83,6 @@ const getCar = async ([payload, res]) => {
                     coords: item.coords
                 }
             }
-            // else if (item.coords) {
-            //     return {
-            //         mobitelId: item.mobitelId,
-            //         speed: item.speed,
-            //         time: item.time,
-            //         coords: item.coords
-            //     }
-            // }
             else if(array[index + 1] !== undefined && item.coords && array[index + 1].coords) {
                 let eq = arrEq(item.coords, array[index + 1].coords)
                 if (!eq) {

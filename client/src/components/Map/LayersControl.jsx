@@ -8,10 +8,10 @@ const LayersControl = props => {
         const types = ['osm', 'googleSat', 'googleStreets', 'googleHybrid', 'googleTerran']
 
         return (
-            <ul className="Controls" onClick={props.click}>
+            <ul className="Controls">
                 {
                     types.map((type, index) => {
-                        return <li key={`${type}_${index}`}>{type}</li>
+                        return <li key={`${type}_${index}`} onClick={ () => {props.click(type)} }>{type}</li>
                     })
                 }
             </ul>

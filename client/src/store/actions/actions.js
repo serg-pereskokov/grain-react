@@ -45,7 +45,7 @@ const popUpEnd = data => {
         type: "POP_UP_END",
         payload: data,
         center,
-        zoom: 14,
+        zoom: 10,
         startPath,
         endPath
     }
@@ -71,11 +71,19 @@ const closeHandler = () => {
     }
 }
 
+const changeTileLayer = payload => {
+    return {
+        type: 'CHANGE_TILE_LAYER',
+        payload
+    }
+}
+
 export {
     login,
     toggleMenu,
     quit,
     popUpView,
     getData,
-    closeHandler
+    closeHandler,
+    changeTileLayer
 }

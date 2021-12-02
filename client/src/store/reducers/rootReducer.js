@@ -27,6 +27,11 @@ const initialState = {
         zoom: 7,
         center: [49.447767, 31.409793]
     },
+    tileLayer: {
+        layout: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        type: 'osm',
+        subdomains: null
+    },
     gpsData: null
 }
 
@@ -101,6 +106,14 @@ const rootReducer = (state = initialState, action) => {
                 },
                 popUp: {
                     loader: false
+                }
+            }
+        case 'CHANGE_TILE_LAYER':
+            return {
+                ...state,
+                tileLayer: {
+                    layout: action.payload.layout,
+                    subdomains: action.payload.subdomains
                 }
             }
         default:
