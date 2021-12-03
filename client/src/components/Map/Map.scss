@@ -8,53 +8,22 @@
       transition: all .3s linear;
       z-index: 50000 !important;
     }
-    
-    .LayersControl{
-      position: absolute;
-      top: 80px;
-      left: 10px;
-      background: #fff;
-      z-index: 1400 !important;
-      cursor: pointer;
-      width: 33px;
-      height: 33px;
-      border: 2px solid rgba(0,0,0,.4);
-      border-radius: 3px;
-      text-align: center;
-      line-height: 33px;
+
+    .leaflet-control-layers {
+      width: 34px;
+      height: 34px;
+
+      a {
+        width: 30px;
+        height: 30px;
+      }
 
       &:hover {
-        background: #efefef;
+        width: 100%;    
+        height: 100%;
       }
     }
-
-    .Controls{
-      position: absolute;
-      z-index: 1400 !important;
-      background: #fff;
-      left: 48px;
-      top: 46px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      border: 2px solid rgba(0,0,0,.4);
-      border-radius: 3px;
-
-      li {
-        height: 20px;
-        line-height: 20px;
-        border-bottom: 1px solid #efefef;
-        cursor: pointer;
-        padding: 0 10px;
-
-        &:last-child {
-          border-bottom: none;
-        }
-
-        &:hover {
-          background: #007236;
-          color: #fff;
-        }
-      }
+    .leaflet-control-attribution{
+      display: none;
     }
 }

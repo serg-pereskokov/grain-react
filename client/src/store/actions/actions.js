@@ -71,19 +71,11 @@ const closeHandler = () => {
     }
 }
 
-const changeTileLayer = payload => {
-    return {
-        type: 'CHANGE_TILE_LAYER',
-        payload
-    }
-}
-
 export {
     login,
     toggleMenu,
     quit,
     popUpView,
     getData,
-    closeHandler,
-    changeTileLayer
+    closeHandler
 }

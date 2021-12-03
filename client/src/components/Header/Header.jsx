@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Header.module.scss'
 import { connect } from 'react-redux'
 import { toggleMenu } from '../../store/actions/actions';
+import Calendar from '../Calendar/Calendar'
 
 const Header = props => {
     return (
@@ -11,6 +12,7 @@ const Header = props => {
                     <span className={styles.logoMob}></span>
                     <span>Grain Alliance</span>
                 </span>
+                < Calendar />
                 <span className={`material-icons ${styles.menu}`} onClick={props.toggleMenu}>
                     {props.showMenu ? 'close' : 'menu'}
                 </span>

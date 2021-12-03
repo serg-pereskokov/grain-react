@@ -1,0 +1,50 @@
+.Calendar {
+    display: flex;
+    height: 38px;
+    align-items: center;
+    width: 340px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .btnNav {
+        width: 35px;
+        height: 35px;
+        background: rgba(255,255,255,.3);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        border: 2px solid rgba(0,0,0,.4);
+        border-radius: 5px 0 0 5px;
+
+        &:active {
+            transform: scale(.9);
+        }
+    }
+
+    .btnNavRight {
+        border-radius: 0 5px 5px 0;
+    }
+
+    .calendarView {
+        width: calc(340px - 35px * 2);
+        height: 35px;
+        border-top: 2px solid #2E5E45;
+        border-bottom: 2px solid #2E5E45;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255,255,255,1);
+        color: rgba(0,0,0,.7);
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .iconPos {
+        padding-right: 5px;
+    }
+}

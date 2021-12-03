@@ -7,8 +7,6 @@ import { Loader } from '../Loader/Loader'
 
 const PopUp = props => {
 
-    // Backup sql 04.01.2021 - 04.02.2021
-
     const date = new Date()
 
     const [state, setState] = useState({

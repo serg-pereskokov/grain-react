@@ -108,15 +108,6 @@ const rootReducer = (state = initialState, action) => {
                     loader: false
                 }
             }
-        case 'CHANGE_TILE_LAYER':
-            return {
-                ...state,
-                tileLayer: {
-                    layout: action.payload.layout,
-                    subdomains: action.payload.subdomains,
-                    type: action.payload.type
-                }
-            }
         default:
             return state
     }

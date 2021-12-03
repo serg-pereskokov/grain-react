@@ -1,19 +1,12 @@
 import React from "react"
-import { MapContainer, TileLayer, Polyline, Marker, LayersControl } from 'react-leaflet'
+import { MapContainer, Polyline, Marker} from 'react-leaflet'
+import { LayersChange } from "./LayersChange"
 import './Map.scss'
 import { connect } from 'react-redux'
-import { layers } from './utils/layers'
 import { MapFlyTo } from "./MapSettings"
 import { carIcon, endPathIcon } from "./utils/icons"
-// import { LayersControl } from "./LayersControl"
-import { changeTileLayer } from "../../store/actions/actions"
 
 const Map = props => {
-
-    const changeLayoutHandler = (type) => {
-        // prevTile = props.tileLayer.layout.concat()
-        props.changeTileLayer(layers(type))
-    }
 
     const driveCarAnimate = ({ target }) => {
         let counter = 0
@@ -31,50 +24,13 @@ const Map = props => {
 
     }
 
-    const test = () => {
-        return (
-            <LayersControl position='bottomleft'>
-                <LayersControl.BaseLayer checked name="OpenStreetMap.Mapnik">
-                    <TileLayer url={layers('osm').layout} />
-                </ LayersControl.BaseLayer>
-                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
-                    <TileLayer url={layers('googleSat').layout} subdomains={layers('googleSat').subdomains}/>
-                </ LayersControl.BaseLayer>
-                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
-                    <TileLayer url={layers('googleStreets').layout} subdomains={layers('googleStreets').subdomains} />
-                </LayersControl.BaseLayer>
-                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
-                    <TileLayer url={layers('googleHybrid').layout} subdomains={layers('googleHybrid').subdomains} />
-                </LayersControl.BaseLayer>
-                <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
-                    <TileLayer url={layers('googleTerran').layout} subdomains={layers('googleTerran').subdomains}  />
-                </LayersControl.BaseLayer>
-            </ LayersControl>
-        )
-    }
-
-    // useEffect(() => {
-    //     // console.log('component did mount!!!')
-    //     // console.log(props.tileLayer);
-    //     // return () => {
-    //     //     console.log('component will unmount');
-    //     //     setState(true)
-    //     // }
-    // }, [props.tileLayer])
-
     return (
         <MapContainer 
             center={props.center}
             zoom={props.zoom}
             scrollWheelZoom={true}
         >   
-            {/* <LayersControl click={changeLayoutHandler}/> */}
-            {
-                test()
-                // props.tileLayer.subdomains
-                // ? <TileLayer url={props.tileLayer.layout} subdomains={props.tileLayer.subdomains} />
-                // : <TileLayer url={props.tileLayer.layout}  />
-            }
+            <LayersChange />
             {
                 props.latlgn
                 ? <>
@@ -100,14 +56,12 @@ const mapStateToProps = (state) => {
         zoom: state.map.zoom,
         latlgn: state.gpsData,
         startPath: state.map.startPath,
-        endPath: state.map.endPath,
-        tileLayer: state.tileLayer
+        endPath: state.map.endPath
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        changeTileLayer: (payload) => dispatch(changeTileLayer(payload))
     }
 }
 
