@@ -1,6 +1,55 @@
 .TrackDown {
     width: 100%;
     margin: 10px 10px 10px 0;
+    padding: 0 10px 0 10px;
     border-radius: 0 3px 3px 0;
-    background: rgba(255,255,255,.3)
+    background: rgba(255,255,255,.3);
+
+    .header {
+        text-align: center;
+        border-bottom: 2px solid rgba(255,255,255,.3);
+        margin-bottom: 5px;
+    }
+
+    .searchBlock {
+        position: relative;
+
+        .search {
+            width: 100%;
+            border: none;
+            border-radius: 3px;
+            text-indent: 5px;
+            background: rgba(255,255,255,.3);
+            color: #fff;
+
+            &::placeholder {
+                color: #fff;
+            }
+            &:focus {
+                outline: none !important;
+            }
+        }
+        i {
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        i:active {
+            transform: scale(.9);
+        }
+    }
+
+    .mainFolder{
+        width: 100%;
+        height: 24px;
+        overflow: hidden;
+
+        .explorerMainDescr {
+            display: block;
+            font-size: 12px;
+            border: 1px solid red;
+        }
+    }
 }
