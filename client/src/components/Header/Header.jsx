@@ -3,6 +3,7 @@ import styles from './Header.module.scss'
 import { connect } from 'react-redux'
 import { toggleMenu } from '../../store/actions/actions';
 import Calendar from '../Calendar/Calendar'
+import CalendarPopUp from '../PopUp/CalendarPopUp/CalendarPopUp'
 
 const Header = props => {
     return (
@@ -17,6 +18,7 @@ const Header = props => {
                     {props.showMenu ? 'close' : 'menu'}
                 </span>
             </div>
+            <CalendarPopUp />
         </>
     );
 }

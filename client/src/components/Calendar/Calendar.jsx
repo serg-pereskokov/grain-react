@@ -1,5 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect } from "react"
 import styles from './Calendar.module.scss'
+import { connect } from "react-redux"
+import { initialDate, changeDate } from "../../store/actions/actions"
 
 /*
     *** 24h => 86400 * 1000ms
@@ -8,42 +10,20 @@ import styles from './Calendar.module.scss'
 
 // Backup sql 04.01.2021 - 04.02.2021
 
-const startDay = new Date().setHours(0, 0, 0)
-const day = Date.now()
+// const startDay = new Date().setHours(0, 0, 0)
+// const day = Date.now()
 
 const getCalendarTimeStamp = (date) => {
     return date.toLocaleString('ua-UA', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
 }   
 
-const Calendar = props => {
+const Calendar = ( { initialDate, changeDate, startDay, endDay, current } ) => {
 
-    const [dateState, setDateState] = useState({
-        startDay,
-        endDay : day,
-        current: day
-    })
+    useEffect(() => {
+        initialDate()
+    }, [initialDate])
 
-    const changeDateHandler = step => {
-
-        if (step === 'prev') {
-            setDateState(() => {
-                return {
-                    ...dateState,
-                    startDay: dateState.startDay - (86400 * 1000),
-                    endDay: dateState.startDay - 1000
-                }
-            })
-        } else {
-
-            setDateState(() => {
-                return {
-                    ...dateState,
-                    startDay: dateState.startDay + (86400 * 1000) < dateState.current ? dateState.startDay + (86400 * 1000) : dateState.startDay,
-                    endDay: dateState.endDay + (86400 * 1000)  < dateState.current ? dateState.endDay + (86400 * 1000) : dateState.current
-                }
-            })
-        }
-    }
+    const changeDateHandler = step => changeDate(step, startDay, endDay, current)
 
     return (
         <div className={styles.Calendar}>
@@ -51,11 +31,11 @@ const Calendar = props => {
             <div className={styles.calendarView}>
                 <span className={`material-icons ${styles.iconPos}`}>date_range</span>
                 <span className={styles.prevDate}>
-                    { getCalendarTimeStamp(new Date(dateState.startDay)) }
+                    { getCalendarTimeStamp(new Date(startDay)) }
                 </span>
                 &ensp;-&ensp;
                 <span className={styles.currentDate}>
-                    { getCalendarTimeStamp(new Date(dateState.endDay)) }
+                    { getCalendarTimeStamp(new Date(endDay)) }
                 </span>
             </div>
             <div className={`material-icons ${styles.btnNav} ${styles.btnNavRight}`} onClick={() => changeDateHandler('next')}>chevron_right</div>
@@ -63,5 +43,20 @@ const Calendar = props => {
     )
 }
 
+const mapStateToProps = ({datePeriod}) => {
+    return {
+        startDay: datePeriod.startDay,
+        endDay: datePeriod.endDay,
+        current: datePeriod.current
+    }
+}
 
-export default Calendar
+const mapDispatchToProps = dispatch => {
+    return {
+        initialDate: () => dispatch(initialDate()),
+        changeDate: (step, startDay, endDay, currnt) => dispatch(changeDate(step, startDay, endDay, currnt))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar)

@@ -71,11 +71,49 @@ const closeHandler = () => {
     }
 }
 
+const initialDate = () => {
+
+    const startDay = new Date().setHours(0, 0, 0)
+    const day = Date.now()
+    
+    return {
+        type: 'INITIAL_DATE',
+        current: day,
+        startDay,
+        endDay: day
+    }
+}
+
+const changeDate = (step = null, startDay, endDay, current = null) => {
+
+    if (step === 'prev') {
+        return {
+            type: 'CHANGE_DATE',
+            startDay: startDay - (86400 * 1000),
+            endDay: startDay - 1000
+        }
+    } else if (step === 'next'){
+        return {
+            type: 'CHANGE_DATE',
+            startDay: startDay + (86400 * 1000) < current ? startDay + (86400 * 1000) : startDay,
+            endDay: endDay + (86400 * 1000)  < current ? endDay + (86400 * 1000) : current
+        }
+    } else {
+        return {
+            type: 'CHANGE_DATE_TEMP',
+            start: startDay,
+            end: endDay
+        }
+    }
+}
+
 export {
     login,
     toggleMenu,
     quit,
     popUpView,
     getData,
-    closeHandler
+    closeHandler,
+    initialDate,
+    changeDate
 }

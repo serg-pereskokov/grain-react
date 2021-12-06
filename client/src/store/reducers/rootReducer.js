@@ -32,6 +32,15 @@ const initialState = {
         type: 'osm',
         subdomains: null
     },
+    datePeriod: {
+        current: null,
+        startDay: null,
+        endDay: null,
+        temp: {
+            start: null,
+            end: null
+        }
+    },
     gpsData: null
 }
 
@@ -106,6 +115,43 @@ const rootReducer = (state = initialState, action) => {
                 },
                 popUp: {
                     loader: false
+                }
+            }
+        case 'INITIAL_DATE': 
+            return {
+                ...state,
+                datePeriod: {
+                    current: action.current,
+                    startDay: action.startDay,
+                    endDay: action.endDay,
+                    temp: {
+                        start: action.startDay,
+                        end: action.endDay
+                    }
+                }
+            }
+        case 'CHANGE_DATE':
+            return {
+                ...state,
+                datePeriod: {
+                    ...state.datePeriod,
+                    startDay: action.startDay,
+                    endDay: action.endDay,
+                    temp: {
+                        start: action.startDay,
+                        end: action.endDay
+                    }
+                }
+            }
+        case 'CHANGE_DATE_TEMP':
+            return {
+                ...state,
+                datePeriod: {
+                    ...state.datePeriod,
+                    temp: {
+                        start: action.start,
+                        end: action.end
+                    }
                 }
             }
         default:
