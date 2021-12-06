@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import styles from './Calendar.module.scss'
 import { connect } from "react-redux"
-import { initialDate, changeDate } from "../../store/actions/actions"
+import { initialDate, changeDate, toggleCalendarSettings } from "../../store/actions/actions"
 
 /*
     *** 24h => 86400 * 1000ms
@@ -17,7 +17,7 @@ const getCalendarTimeStamp = (date) => {
     return date.toLocaleString('ua-UA', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
 }   
 
-const Calendar = ( { initialDate, changeDate, startDay, endDay, current } ) => {
+const Calendar = ( { initialDate, changeDate, startDay, endDay, current, toggleCalendarSettings } ) => {
 
     useEffect(() => {
         initialDate()
@@ -28,7 +28,7 @@ const Calendar = ( { initialDate, changeDate, startDay, endDay, current } ) => {
     return (
         <div className={styles.Calendar}>
             <div className={`material-icons ${styles.btnNav}`} onClick={() => changeDateHandler('prev')}>chevron_left</div>
-            <div className={styles.calendarView}>
+            <div className={styles.calendarView} onClick={() => toggleCalendarSettings()}>
                 <span className={`material-icons ${styles.iconPos}`}>date_range</span>
                 <span className={styles.prevDate}>
                     { getCalendarTimeStamp(new Date(startDay)) }
@@ -54,7 +54,8 @@ const mapStateToProps = ({datePeriod}) => {
 const mapDispatchToProps = dispatch => {
     return {
         initialDate: () => dispatch(initialDate()),
-        changeDate: (step, startDay, endDay, currnt) => dispatch(changeDate(step, startDay, endDay, currnt))
+        changeDate: (step, startDay, endDay, currnt) => dispatch(changeDate(step, startDay, endDay, currnt)),
+        toggleCalendarSettings: () => dispatch(toggleCalendarSettings())
     }
 }
 

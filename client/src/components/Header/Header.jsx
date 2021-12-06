@@ -18,14 +18,19 @@ const Header = props => {
                     {props.showMenu ? 'close' : 'menu'}
                 </span>
             </div>
-            <CalendarPopUp />
+            {
+                props.isOpenCalendarSettings
+                ? <CalendarPopUp />
+                : null
+            }
         </>
     );
 }
 
-const mapStateToProps = ({ header }) => {
+const mapStateToProps = ({ header, popUp }) => {
     return {
-        showMenu: header.showMenu
+        showMenu: header.showMenu,
+        isOpenCalendarSettings: popUp.isOpenCalendarSettings
     }
 }
 

@@ -107,6 +107,28 @@ const changeDate = (step = null, startDay, endDay, current = null) => {
     }
 }
 
+const toggleCalendarSettings = () => {
+    return {
+        type: 'TOGGLE_CALENDAR_SETTINGS'
+    }
+}
+
+const applyDateHandler = (node, startDay, endDay) => {
+    node.preventDefault()
+    return {
+        type: 'CHANGE_DATE',
+        startDay, endDay
+    }
+}
+const closeDateHandler = (node) => {
+    
+    node.preventDefault()
+
+    return {
+        type: 'CALENDAR_CLOSE'
+    }
+}
+
 export {
     login,
     toggleMenu,
@@ -115,5 +137,8 @@ export {
     getData,
     closeHandler,
     initialDate,
-    changeDate
+    changeDate,
+    applyDateHandler,
+    closeDateHandler,
+    toggleCalendarSettings
 }

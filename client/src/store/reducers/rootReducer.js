@@ -21,7 +21,8 @@ const initialState = {
         options: null
     },
     popUp: {
-        loader: false
+        loader: false,
+        isOpenCalendarSettings: false
     },
     map: {
         zoom: 7,
@@ -59,6 +60,14 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 header: {
                     showMenu: !state.header.showMenu
+                }
+            }
+        case 'TOGGLE_CALENDAR_SETTINGS':
+            return {
+                ...state,
+                popUp: {
+                    ...state.popUp,
+                    isOpenCalendarSettings: !state.popUp.isOpenCalendarSettings
                 }
             }
         case 'QUIT':
@@ -117,6 +126,15 @@ const rootReducer = (state = initialState, action) => {
                     loader: false
                 }
             }
+        case 'CALENDAR_CLOSE': {
+            return {
+                ...state,
+                popUp: {
+                    ...state.popUp,
+                    isOpenCalendarSettings: false
+                }
+            }
+        }
         case 'INITIAL_DATE': 
             return {
                 ...state,
@@ -141,6 +159,10 @@ const rootReducer = (state = initialState, action) => {
                         start: action.startDay,
                         end: action.endDay
                     }
+                },
+                popUp: {
+                    ...state.popUp,
+                    isOpenCalendarSettings: state.popUp.isOpenCalendarSettings ? false : null
                 }
             }
         case 'CHANGE_DATE_TEMP':

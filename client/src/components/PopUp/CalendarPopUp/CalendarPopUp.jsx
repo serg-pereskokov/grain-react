@@ -1,68 +1,48 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import './CalendarPopUp.scss'
 import LayoutPopUp from '../LayoutPopUp'
 import { connect } from 'react-redux'
-import { changeDate } from '../../../store/actions/actions'
+import { changeDate, applyDateHandler, closeDateHandler } from '../../../store/actions/actions'
 
 
 const getTime = (date) => {
     return date.toLocaleString('ua-UA', {hour: 'numeric', minute: 'numeric'})
 } 
 
-const timeToTimestamp = (time) => {
+const timeToTimestamp = (time, date) => {
 
     const [hour, minutes] = time.split(':')
-    const timestamp = ((hour * 3600) + (minutes * 60)) * 1000
+    const timestamp = new Date(date).setHours(hour*1, minutes*1)
+
     return timestamp
+
 }
  
-const CalendarPopUp = ({ startDay, endDay, current, changeDate }) => {
-
-    const [state, setState] = useState({
-        prevTime: 0,
-        nextTime: (86400 * 1000) - 1000 // 23:59
-    })
-
-    useEffect()
+const CalendarPopUp = ({ startDay, endDay, current, changeDate, applyDateHandler, closeDateHandler }) => {
 
     const changeDateAndTime = (type, timestamp) => {
         switch(type) {
             case 'prevDate':
-                changeDate(null, timestamp + state.prevTime, endDay)
+                changeDate(null, timestamp, endDay)
                 break
             case 'prevTime':
-                setState(() => {
-                    return {
-                        ...state,
-                        prevTime: timeToTimestamp(timestamp)
-                    }
-                })
-
-                console.log(state);
-                // changeDate(null, timestamp + state.prevTime, endDay)
+                changeDate(null, timeToTimestamp(timestamp, startDay), endDay)
                 break
             case 'nextDate':
-                changeDate(null, startDay, timestamp + state.nextTime)
+                changeDate(null, startDay, timestamp + 86399000)
                 break
             case 'nextTime':
-                setState(() => {
-                    return {
-                        ...state,
-                        nextTime: timeToTimestamp(timestamp)
-                    }
-                })
-                // changeDate(null, startDay, timestamp + state.nextTime)
+                changeDate(null, startDay, timeToTimestamp(timestamp, endDay))
                 break
             default:
-                return state
+                return
         }
     }
-
-
+ 
     return (
-        <LayoutPopUp title={'Выбор периода для просмотра'} position={'top'} width={'bigger'}>
+        <LayoutPopUp title={'Выбор периода для просмотра'} position={'top'} width={'bigger'} closeHandler={closeDateHandler}>
             <div className="calendar">
                 <div className="calendarStart">
                     Начало периода:
@@ -95,8 +75,8 @@ const CalendarPopUp = ({ startDay, endDay, current, changeDate }) => {
                     />
                 </div>
                 <div className="actionButtons">
-                    <button className="apply btn btn-primary">Применить</button>
-                    <button className="cancel btn btn-light">Отменить</button>
+                    <button className="apply btn btn-primary" onClick={e => applyDateHandler(e, startDay, endDay)}>Применить</button>
+                    <button className="cancel btn btn-light" onClick={e => closeDateHandler(e)}>Отменить</button>
                 </div>
             </div>
         </LayoutPopUp>
@@ -113,7 +93,9 @@ const mapStateToProps = ({datePeriod}) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeDate: (step, startDay, endDay) => dispatch(changeDate(step, startDay, endDay))
+        changeDate: (step, startDay, endDay) => dispatch(changeDate(step, startDay, endDay)),
+        applyDateHandler: (node, startDay, endDay) => dispatch(applyDateHandler(node, startDay, endDay)),
+        closeDateHandler: node => dispatch(closeDateHandler(node))
     }
 }
 

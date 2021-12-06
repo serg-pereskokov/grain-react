@@ -2,9 +2,10 @@
 
 .RightMenu {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: fixed;
-    width: 70px;
+    width: 230px; // 70px
+    transform: translateX(calc(230px - 70px));
     height: calc(100vh - 50px);
     z-index: $z-index-right-menu;
     right: 0;
@@ -12,6 +13,58 @@
     background: $main-bg-color;
     border-top: 2px solid rgba(255,255,255,.5);
     color: #fff;
+    transition: all .3s ease-in-out;
+
+    &.expanded {
+        width: 230px;
+        transition: all .3s ease-in-out;
+        transform: translateX(0px);
+
+
+        .menu {
+            width: 35px;
+        }
+
+        li {
+            width: 35px;
+            height: 35px;
+
+            span {
+                display: flex;                
+                justify-content: center;
+                align-items: center;
+                width: 35px;
+                height: 35px;
+                font-size: 30px;
+            }
+            .descr {
+                display: none;
+            }
+
+            &.active {
+                background: rgba(0,0,0,.2);
+            } 
+        }
+
+        .btnExit {
+            margin-bottom: 10px;
+    
+            .exit {
+                font-size: 30;
+                color: #fff;
+            }
+            .descr {
+                display: none;
+            }
+        }
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        width: 70px;
+        height: 100%;
+    }
 
     ul {
         list-style: none;
@@ -33,6 +86,10 @@
 
             span {
                 font-size: $icon-size;
+            }
+
+            .descr {
+                font-size: 12px;
             }
 
             
