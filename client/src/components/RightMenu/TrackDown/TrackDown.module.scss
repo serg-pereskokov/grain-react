@@ -1,4 +1,6 @@
 .TrackDown {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin: 10px 10px 10px 0;
     padding: 0 10px 0 10px;
@@ -40,16 +42,9 @@
             transform: scale(.9);
         }
     }
-
-    .mainFolder{
-        width: 100%;
-        height: 24px;
-        overflow: hidden;
-
-        .explorerMainDescr {
-            display: block;
-            font-size: 12px;
-            border: 1px solid red;
-        }
+    .explorer {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 }

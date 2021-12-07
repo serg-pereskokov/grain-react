@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './RightMenu.module.scss'
 import { connect } from 'react-redux'
 import { quit, popUpView } from '../../store/actions/actions'
-import { TrackDown } from './TrackDown/TrackDown'
+import TrackDown from './TrackDown/TrackDown'
 
 
 const RightMenu = props => {
@@ -49,8 +49,8 @@ const RightMenu = props => {
                     <li title='Отгрузка'>
                         <span 
                             className={`material-icons ${styles.exit}`} 
-                        >local_shipping</span>
-                        <span className={styles.descr}>Отгрузка</span>
+                        >settings</span>
+                        <span className={styles.descr}>Настройки</span>
                     </li>
                 </ul>
                 <div className={styles.btnExit} title='Выход'>

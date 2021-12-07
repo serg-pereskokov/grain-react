@@ -1,46 +1,22 @@
 import React from "react"
 import styles from './TrackDown.module.scss'
-import allCars from '../../../assets/trackDownSettings.json'
+import { TrackDownExplorer } from "./TrackDownExplorer/TrackDownExplorer"
+import { connect } from 'react-redux'
+import { getDataGPS } from "../../../store/actions/actions"
 
-const TrackDown = () => {
-    
-    const {agricultural_machinery, cars} = allCars
+const TrackDown = ({ getDataGPS, startDay, endDay }) => {
 
-    const Explorer = () => {
-        return (
-            <ul className={styles.mainFolder}>
-                <li>
-                    <span className={styles.explorerMainDescr}>Все машины</span>
-                    <ul>
-                        <li>
-                            <span className={styles.explorerDescr}>СХ техника</span>
-                            <ul>
-                                {
-                                    agricultural_machinery.map((item, index) => {
-                                        return (
-                                            <li key={index}>{item}</li>
-                                        )
-                                    })
-                                }
-                            </ul>
-                        </li>
-                        <li>
-                            <span className={styles.explorerDescr}>Машины</span>
-                            <ul>
-                                {
-                                    cars.map((item, index) => {
-                                        return (
-                                            <li key={index}>{item}</li>
-                                        )
-                                    })
-                                }
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        )
+    console.log(startDay, endDay);
+    const dataState = (data) => {
+        console.log('TrackDown state' , data);
+        getDataGPS({
+            mobitelIds: data,
+            startDay,
+            endDay,
+            sqlDB: 'mca_dispatcher'
+        })
     }
+
 
     return (
         <div className={styles.TrackDown}>
@@ -50,10 +26,23 @@ const TrackDown = () => {
                 <i className='material-icons'>search</i>
             </div>
             <div className={styles.explorer}>
-                <Explorer />
+                <TrackDownExplorer getDataState={dataState}/>
             </div>
         </div>
     )
 }
 
-export { TrackDown }
+const mapStateToProps = ({ datePeriod }) => {
+    return {
+        startDay: datePeriod.startDay,
+        endDay: datePeriod.endDay
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getDataGPS: (payload) => dispatch(getDataGPS(payload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrackDown)

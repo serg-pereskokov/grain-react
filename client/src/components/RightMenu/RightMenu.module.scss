@@ -23,27 +23,28 @@
 
         .menu {
             width: 35px;
-        }
 
-        & li {
-            width: 35px;
-            height: 35px;
-
-            span {
-                display: flex;                
-                justify-content: center;
-                align-items: center;
+            li {
                 width: 35px;
                 height: 35px;
-                font-size: 30px;
+    
+                span {
+                    display: flex;                
+                    justify-content: center;
+                    align-items: center;
+                    width: 35px;
+                    height: 35px;
+                    font-size: 30px;
+                }
+                .descr {
+                    display: none;
+                }
+    
+                &.active {
+                    background: rgba(0,0,0,.2);
+                } 
             }
-            .descr {
-                display: none;
-            }
-
-            &.active {
-                background: rgba(0,0,0,.2);
-            } 
+    
         }
 
         .btnExit {
@@ -64,42 +65,44 @@
         flex-direction: column;
         width: 70px;
         height: 100%;
-    }
 
-    & ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        font-size: 12px;
-        align-items: center;
-        user-select: none;
-        flex-grow: 1;
-        margin: 0;
-        padding: 0;
-        padding-top: 10px;
-
-        li {
+        ul {
+            list-style: none;
             display: flex;
             flex-direction: column;
+            font-size: 12px;
             align-items: center;
-            cursor: pointer;
-            list-style: none;
-
-            span {
-                font-size: $icon-size;
-            }
-
-            .descr {
-                font-size: 12px;
-            }
-
-            
-            &:active {
-                transform: scale(.9);
+            user-select: none;
+            flex-grow: 1;
+            margin: 0;
+            padding: 0;
+            padding-top: 10px;
+    
+            li {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+                list-style: none;
+    
+                span {
+                    font-size: $icon-size;
+                }
+    
+                .descr {
+                    font-size: 12px;
+                }
+    
+                
+                &:active {
+                    transform: scale(.9);
+                }
             }
         }
+    
     }
 
+    
     .btnExit {
         display: flex;
         flex-direction: column;

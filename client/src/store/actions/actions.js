@@ -51,7 +51,7 @@ const popUpEnd = data => {
     }
 }
 
-const getData = (payload) => {
+const getData = payload => {
     return async dispatch => {
         dispatch(popUpLoader())
         try {
@@ -61,6 +61,17 @@ const getData = (payload) => {
             dispatch(popUpEnd(latlgn))
         } catch (e) {
             console.log(e)
+        }
+    }
+}
+
+const getDataGPS = payload => {
+    return async dispatch => {
+        try {
+            const {data} = await axios.post('/api/getDataGps', payload)
+            console.log(data);
+        } catch (e) {
+            console.log(e);
         }
     }
 }
@@ -140,5 +151,6 @@ export {
     changeDate,
     applyDateHandler,
     closeDateHandler,
-    toggleCalendarSettings
+    toggleCalendarSettings,
+    getDataGPS
 }
