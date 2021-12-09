@@ -6,7 +6,8 @@ import { login } from '../../store/actions/actions'
 const Auth = props => {
     const [state, setState] = useState({
         username: null,
-        password: null
+        password: null,
+        error: false
     })
 
     const formControlsChange = e => {
@@ -28,6 +29,13 @@ const Auth = props => {
                 props.login(k)
                 sessionStorage.setItem('auth', true)
                 sessionStorage.setItem('loginAs', k)
+            } else {
+                setState(() => {
+                    return {
+                        ...state, 
+                        error: true
+                    }
+                })
             }
         }
     }
@@ -35,6 +43,25 @@ const Auth = props => {
     return (
         <div className={styles.Auth}>
             <i className={styles.logo} />
+            {
+                state.error
+                ? <div className="alert alert-danger d-flex align-items-center" role="alert" id="liveAlertPlaceholder">
+                        Неверное имя пользователя или пароль
+                    <button 
+                        onClick={() => {
+                            setState(() => {
+                                return {
+                                    ...state,
+                                    error: false
+                                }})}}
+                        type="button"
+                        className="btn-close ms-2"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                    ></button>
+                  </div>
+                : null
+            }
             <form>
                 <input 
                     type="text" 
