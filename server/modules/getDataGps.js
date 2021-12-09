@@ -4,6 +4,7 @@ import { SQL_CONN as settings } from '../CONST.js'
 import { trimTimestamp } from './trimTimestamp.js'
 import { arrEq } from '../utils/arrEq.js'
 
+
 const getCar = async ([payload, res]) => {
     console.log(payload)
     
@@ -17,136 +18,82 @@ const getCar = async ([payload, res]) => {
 
         conn.connect();
 
-        let data = await sql(conn, `
-            SELECT
-                ROUND(datagps.Longitude/600000,6) as lng,
-                ROUND(datagps.Latitude/600000,6) as lat,
-                datagps.UnixTime,
-                datagps.Speed,
-                datagps.Mobitel_ID,
-                ROUND(datagps64.Longitude / 10000000, 8) as lng,
-                ROUND(datagps64.Latitude / 10000000, 8) as lat,
-                datagps64.UnixTime,
-                datagps64.Speed,
-                datagps64.Mobitel_ID
-            FROM
-                datagps
-            JOIN 
-                datagps64
-            WHERE
-                datagps.UnixTime >= ${trimTimestamp(payload.startDay)}
-            AND 
-                datagps.UnixTime <= ${trimTimestamp(payload.endDay)}
-            AND 
-                datagps.Mobitel_ID IN(${payload.mobitelIds})
-            AND
-                datagps64.UnixTime >= ${trimTimestamp(payload.startDay)}
-            AND 
-                datagps64.UnixTime <= ${trimTimestamp(payload.endDay)}
-            AND 
-                datagps64.Mobitel_ID IN(${payload.mobitelIds})
-            ORDER BY
-                datagps.UnixTime
-        `)
+        let data = []
 
-        // let data = await sql(conn, `
-        //     SELECT
-        //         ROUND(datagps.Longitude/600000,6) as lng,
-        //         ROUND(datagps.Latitude/600000,6) as lat,
-        //         datagps.UnixTime,
-        //         datagps.Speed,
-        //         datagps.Mobitel_ID
-        //     FROM
-        //         datagps
-        //     WHERE 
-        //         datagps.UnixTime >= ${trimTimestamp(payload.startDay)}
-        //     AND 
-        //         datagps.UnixTime <= ${trimTimestamp(payload.endDay)}
-        //     AND 
-        //         datagps.Mobitel_ID IN(${payload.mobitelIds})
-        //     UNION
-        //     SELECT
-        //         ROUND(datagps64.Longitude / 10000000, 8) as lng,
-        //         ROUND(datagps64.Latitude / 10000000, 8) as lat,
-        //         datagps64.UnixTime,
-        //         datagps64.Speed,
-        //         datagps64.Mobitel_ID
-        //     FROM
-        //         datagps64
-        //     WHERE 
-        //         datagps64.UnixTime >= ${trimTimestamp(payload.startDay)}
-        //     AND 
-        //         datagps64.UnixTime <= ${trimTimestamp(payload.endDay)}
-        //     AND 
-        //         datagps64.Mobitel_ID IN(${payload.mobitelIds})
-        //     ORDER BY
-        //         UnixTime
-        // `)
+        for (let item of payload.mobitelIds) {
 
-        // let data = await sql(conn, `
-        //     SELECT
-        //         ROUND(datagps.Longitude/600000,6) as lng,
-        //         ROUND(datagps.Latitude/600000,6) as lat,
-        //         datagps.UnixTime,
-        //         datagps.Speed,
-        //         datagps.Mobitel_ID,
+            let query = await sql(conn, `
+                SELECT 
+                    ROUND(datagps.Longitude/600000,6) as lng,
+                    ROUND(datagps.Latitude/600000,6) as lat,
+                    datagps.UnixTime,
+                    datagps.Speed,
+                    datagps.Mobitel_ID
+                FROM
+                    datagps
+                WHERE
+                    datagps.UnixTime >= ${trimTimestamp(payload.startDate)}
+                AND 
+                    datagps.UnixTime <= ${trimTimestamp(payload.endDate)}
+                AND 
+                    datagps.Mobitel_ID = ${item}
+                ORDER BY 
+                    datagps.UnixTime
+            `)
+            if (query.length === 0) {
+                query = await sql(conn, `
+                    SELECT 
+                        ROUND(datagps64.Longitude / 10000000, 8) as lng,
+                        ROUND(datagps64.Latitude / 10000000, 8) as lat,
+                        datagps64.UnixTime,
+                        datagps64.Speed,
+                        datagps64.Mobitel_ID
+                    FROM
+                        datagps64
+                    WHERE
+                        datagps64.UnixTime >= ${trimTimestamp(payload.startDate)}
+                    AND 
+                        datagps64.UnixTime <= ${trimTimestamp(payload.endDate)}
+                    AND 
+                        datagps64.Mobitel_ID = ${item}
+                    ORDER BY 
+                        datagps64.UnixTime
+                `)
+            }
 
-        //         ROUND(datagps64.Longitude / 10000000, 8) as lng,
-        //         ROUND(datagps64.Latitude / 10000000, 8) as lat,
-        //         datagps64.UnixTime,
-        //         datagps64.Speed,                
-        //         datagps64.Mobitel_ID,
-        //     FROM
-        //             datagps 
-        //         AND 
-        //             datagps64
-        //     WHERE 
-        //         datagps.UnixTime >= ${trimTimestamp(payload.startDay)}
-        //     AND 
-        //         datagps.UnixTime <= ${trimTimestamp(payload.endDay)}
-        //     AND 
-        //         datagps.Mobitel_ID IN(${payload.mobitelIds})
-        //     ORDER BY
-        //         datagps.UnixTime
-        // `)
+            if (query.length !== 0) {
+                const array = query.map(value => {
+                    return {
+                        speed: value.Speed,
+                        time: value.UnixTime,
+                        coords: [value.lat, value.lng]
+                    }
+                })
+                .filter(value => {
+                    if (value.coords[0] !== 0) return value
+                })
 
-        // if ( data.length === 0 ) {
-        //     data = await sql(conn, `
-        //         SELECT
-        //             ROUND(datagps64.Longitude / 10000000, 8) as lng,
-        //             ROUND(datagps64.Latitude / 10000000, 8) as lat,
-        //             datagps64.UnixTime,
-        //             datagps64.Speed
-        //         FROM 
-        //             datagps64
-        //         WHERE 
-        //             datagps64.UnixTime >= ${trimTimestamp(payload.startDate)}
-        //         AND 
-        //             datagps64.UnixTime <= ${trimTimestamp(payload.endDate)}
-        //         AND 
-        //             datagps64.Mobitel_ID IN(${payload.mobitelIds})
-        //         ORDER BY
-        //             datagps64.UnixTime
-        //     `)
-        // }
+                data.push({id: item, array})
+            }
+        }
 
         conn.end()
 
-        let obj = []
+        // let obj = []
 
-        for (let item of payload.mobitelIds) {
-            const array = data.filter( value => {
-                if (item === value.Mobitel_ID) return {
-                    speed: value.speed,
-                    time: value.UnixTime,
-                    coords: [value.lat, value.lng]
-                }
-            })
-            obj.push({id: item, array})
-        }
+        // for (let item of payload.mobitelIds) {
+        //     const array = data.filter( value => {
+        //         if (item === value.Mobitel_ID) return {
+        //             speed: value.speed,
+        //             time: value.UnixTime,
+        //             coords: [value.lat, value.lng]
+        //         }
+        //     })
+        //     obj.push({id: item, array})
+        // }
 
         
-        res.json(obj)
+        res.json(data)
 
         // const newData = data.map( item => {
         //     if (item.lat && item.lng) {

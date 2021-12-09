@@ -35,8 +35,8 @@ const initialState = {
     },
     datePeriod: {
         current: null,
-        startDay: null,
-        endDay: null,
+        startDate: null,
+        endDate: null,
         temp: {
             start: null,
             end: null
@@ -126,6 +126,19 @@ const rootReducer = (state = initialState, action) => {
                     loader: false
                 }
             }
+        case 'ADD_DATA_GPS': {
+            // 50.1153469,33.0896285
+            return {
+                ...state,
+                gpsData: action.payload,
+                map: {
+                    ...state.map,
+                    center: [50.1153469,33.0896285],
+                    zoom: 11
+                }
+
+            }
+        }
         case 'CALENDAR_CLOSE': {
             return {
                 ...state,
@@ -140,11 +153,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 datePeriod: {
                     current: action.current,
-                    startDay: action.startDay,
-                    endDay: action.endDay,
+                    startDate: action.startDate,
+                    endDate: action.endDate,
                     temp: {
-                        start: action.startDay,
-                        end: action.endDay
+                        start: action.startDate,
+                        end: action.endDate
                     }
                 }
             }
@@ -153,11 +166,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 datePeriod: {
                     ...state.datePeriod,
-                    startDay: action.startDay,
-                    endDay: action.endDay,
+                    startDate: action.startDate,
+                    endDate: action.endDate,
                     temp: {
-                        start: action.startDay,
-                        end: action.endDay
+                        start: action.startDate,
+                        end: action.endDate
                     }
                 },
                 popUp: {

@@ -20,21 +20,21 @@ const timeToTimestamp = (time, date) => {
 
 }
  
-const CalendarPopUp = ({ startDay, endDay, current, changeDate, applyDateHandler, closeDateHandler }) => {
+const CalendarPopUp = ({ startDate, endDate, current, changeDate, applyDateHandler, closeDateHandler }) => {
 
     const changeDateAndTime = (type, timestamp) => {
         switch(type) {
             case 'prevDate':
-                changeDate(null, timestamp, endDay)
+                changeDate(null, timestamp, endDate)
                 break
             case 'prevTime':
-                changeDate(null, timeToTimestamp(timestamp, startDay), endDay)
+                changeDate(null, timeToTimestamp(timestamp, startDate), endDate)
                 break
             case 'nextDate':
-                changeDate(null, startDay, timestamp + 86399000)
+                changeDate(null, startDate, timestamp + 86399000)
                 break
             case 'nextTime':
-                changeDate(null, startDay, timeToTimestamp(timestamp, endDay))
+                changeDate(null, startDate, timeToTimestamp(timestamp, endDate))
                 break
             default:
                 return
@@ -48,14 +48,14 @@ const CalendarPopUp = ({ startDay, endDay, current, changeDate, applyDateHandler
                     Начало периода:
                     <Calendar 
                         maxDate={new Date(current)}
-                        value={new Date(startDay)}
+                        value={new Date(startDate)}
                         onChange={e => changeDateAndTime('prevDate', new Date(e).getTime())}
                     />
                     <input 
                         type="time"
                         min="00:00"
                         max="23:59"
-                        value={getTime(new Date(startDay))}
+                        value={getTime(new Date(startDate))}
                         onChange={e => changeDateAndTime('prevTime', e.target.value)}
                     />
                 </div>
@@ -63,19 +63,19 @@ const CalendarPopUp = ({ startDay, endDay, current, changeDate, applyDateHandler
                     Окончание периода:
                     <Calendar 
                         maxDate={new Date(current)}
-                        value={new Date(endDay)}
+                        value={new Date(endDate)}
                         onChange={e => changeDateAndTime('nextDate', new Date(e).getTime())}
                     />
                     <input 
                         type="time"
                         min="00:00"
                         max="23:59"
-                        value={getTime(new Date(endDay))}
+                        value={getTime(new Date(endDate))}
                         onChange={e => changeDateAndTime('nextTime', e.target.value)}
                     />
                 </div>
                 <div className="actionButtons">
-                    <button className="apply btn btn-primary" onClick={e => applyDateHandler(e, startDay, endDay)}>Применить</button>
+                    <button className="apply btn btn-primary" onClick={e => applyDateHandler(e, startDate, endDate)}>Применить</button>
                     <button className="cancel btn btn-light" onClick={e => closeDateHandler(e)}>Отменить</button>
                 </div>
             </div>
@@ -85,16 +85,16 @@ const CalendarPopUp = ({ startDay, endDay, current, changeDate, applyDateHandler
 
 const mapStateToProps = ({datePeriod}) => {
     return {
-        startDay: datePeriod.temp.start,
-        endDay: datePeriod.temp.end,
+        startDate: datePeriod.temp.start,
+        endDate: datePeriod.temp.end,
         current: datePeriod.current
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeDate: (step, startDay, endDay) => dispatch(changeDate(step, startDay, endDay)),
-        applyDateHandler: (node, startDay, endDay) => dispatch(applyDateHandler(node, startDay, endDay)),
+        changeDate: (step, startDate, endDate) => dispatch(changeDate(step, startDate, endDate)),
+        applyDateHandler: (node, startDate, endDate) => dispatch(applyDateHandler(node, startDate, endDate)),
         closeDateHandler: node => dispatch(closeDateHandler(node))
     }
 }

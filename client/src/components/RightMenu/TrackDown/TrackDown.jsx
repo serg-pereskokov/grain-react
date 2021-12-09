@@ -4,15 +4,15 @@ import { TrackDownExplorer } from "./TrackDownExplorer/TrackDownExplorer"
 import { connect } from 'react-redux'
 import { getDataGPS } from "../../../store/actions/actions"
 
-const TrackDown = ({ getDataGPS, startDay, endDay }) => {
+const TrackDown = ({ getDataGPS, startDate, endDate }) => {
 
-    console.log(startDay, endDay);
+    console.log(startDate, endDate);
     const dataState = (data) => {
         console.log('TrackDown state' , data);
         getDataGPS({
             mobitelIds: data,
-            startDay,
-            endDay,
+            startDate,
+            endDate,
             sqlDB: 'mca_dispatcher'
         })
     }
@@ -34,8 +34,8 @@ const TrackDown = ({ getDataGPS, startDay, endDay }) => {
 
 const mapStateToProps = ({ datePeriod }) => {
     return {
-        startDay: datePeriod.startDay,
-        endDay: datePeriod.endDay
+        startDate: datePeriod.startDate,
+        endDate: datePeriod.endDate
     }
 }
 

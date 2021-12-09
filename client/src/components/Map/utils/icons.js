@@ -6,7 +6,7 @@ const carIcon = new L.Icon({
     iconUrl: iconCar,
     iconRetinaUrl: null,
     iconAnchor: [30, 75],
-    popupAnchor: null,
+    popupAnchor: [30, 75],
     iconSize: new L.Point(60, 75),
     className: 'leaflet-div-icon-car'
 })
@@ -15,7 +15,7 @@ const endPathIcon = new L.Icon({
     iconUrl: iconEndPath,
     iconRetinaUrl: null,
     iconAnchor: [30, 75],
-    popupAnchor: null,
+    popupAnchor: [0, -75],
     iconSize: new L.Point(60, 75),
     className: 'leaflet-div-icon-finish'
 })

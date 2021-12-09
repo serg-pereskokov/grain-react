@@ -17,13 +17,13 @@ const getCalendarTimeStamp = (date) => {
     return date.toLocaleString('ua-UA', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
 }   
 
-const Calendar = ( { initialDate, changeDate, startDay, endDay, current, toggleCalendarSettings } ) => {
+const Calendar = ( { initialDate, changeDate, startDate, endDate, current, toggleCalendarSettings } ) => {
 
     useEffect(() => {
         initialDate()
     }, [initialDate])
 
-    const changeDateHandler = step => changeDate(step, startDay, endDay, current)
+    const changeDateHandler = step => changeDate(step, startDate, endDate, current)
 
     return (
         <div className={styles.Calendar}>
@@ -31,11 +31,11 @@ const Calendar = ( { initialDate, changeDate, startDay, endDay, current, toggleC
             <div className={styles.calendarView} onClick={() => toggleCalendarSettings()}>
                 <span className={`material-icons ${styles.iconPos}`}>date_range</span>
                 <span className={styles.prevDate}>
-                    { getCalendarTimeStamp(new Date(startDay)) }
+                    { getCalendarTimeStamp(new Date(startDate)) }
                 </span>
                 &ensp;-&ensp;
                 <span className={styles.currentDate}>
-                    { getCalendarTimeStamp(new Date(endDay)) }
+                    { getCalendarTimeStamp(new Date(endDate)) }
                 </span>
             </div>
             <div className={`material-icons ${styles.btnNav} ${styles.btnNavRight}`} onClick={() => changeDateHandler('next')}>chevron_right</div>
@@ -45,8 +45,8 @@ const Calendar = ( { initialDate, changeDate, startDay, endDay, current, toggleC
 
 const mapStateToProps = ({datePeriod}) => {
     return {
-        startDay: datePeriod.startDay,
-        endDay: datePeriod.endDay,
+        startDate: datePeriod.startDate,
+        endDate: datePeriod.endDate,
         current: datePeriod.current
     }
 }
@@ -54,7 +54,7 @@ const mapStateToProps = ({datePeriod}) => {
 const mapDispatchToProps = dispatch => {
     return {
         initialDate: () => dispatch(initialDate()),
-        changeDate: (step, startDay, endDay, currnt) => dispatch(changeDate(step, startDay, endDay, currnt)),
+        changeDate: (step, startDate, endDate, currnt) => dispatch(changeDate(step, startDate, endDate, currnt)),
         toggleCalendarSettings: () => dispatch(toggleCalendarSettings())
     }
 }

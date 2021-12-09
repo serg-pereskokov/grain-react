@@ -5,8 +5,11 @@
     .leaflet-div-icon-car {
       border: none;
       background: none;
-      transition: all .3s linear;
+      transition: all .1s linear;
       z-index: 50000 !important;
+    }
+    .leaflet-tooltip {
+      transition: all .1s linear;
     }
 
     .leaflet-control-layers {
@@ -25,5 +28,86 @@
     }
     .leaflet-control-attribution{
       display: none;
+    }
+
+    .timeLine {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      z-index: 5000;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      border: 2px solid rgba(0,0,0,.2);
+
+      input {
+        width: 500px;
+        margin-right: 5px;
+      }
+
+      .buttonStartPause,
+      .buttonStop{
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        border: none;
+        background: #007236;
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        border-radius: 50%;
+        user-select: none;
+        cursor: pointer;
+      }
+
+      .buttonStartPause:active,
+      .buttonStop:active{
+        transform: scale(.9);
+      }
+
+      .speed {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        border: none;
+        color: #fff;
+        margin-right: 5px;
+        user-select: none;
+        cursor: pointer;
+
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #333;
+          font-weight: bold;
+          font-size: 16px;
+          margin: 5px;
+          width: 30px;
+          cursor: default;
+        }
+
+        .slower,
+        .faster{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20px;
+          height: 20px;
+          background: #007236;
+          border-radius: 50%;
+          font-size: 18px;
+        }
+
+        .slower:active,
+        .faster:active{
+          transform: scale(.9);
+        }
+      }
     }
 }

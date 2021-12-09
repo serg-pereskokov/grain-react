@@ -83,7 +83,7 @@ const TrackDownExplorer = props => {
                 <div className={styles.explorerMainFolder}>
                     <h3 onClick={() => toggleFolder('explorerMainFolder')}>
                         <i className="material-icons">{ state.explorerMainFolder ? 'folder_open' : 'folder'}</i>
-                        Все машины
+                        Вся техника
                     </h3>
                     <input type="checkbox" name="all" onChange={() => toggleChange('mainFolderChecked')} checked={state.mainFolderChecked ? 'checked': null}/>
                 </div>
@@ -120,7 +120,7 @@ const TrackDownExplorer = props => {
                             <div className={styles.explorerFolder}>
                                 <h3 onClick={() => toggleFolder('explorerCars')}>
                                     <i className="material-icons">{ state.explorerCars ? 'folder_open' : 'folder'}</i>
-                                    Машины
+                                    Автомобили
                                 </h3>
                                 <input type="checkbox" name="cars" checked={state.mainFolderChecked ? 'checked' : null} onChange={() => toggleChange('carsChecked')} />
                             </div>

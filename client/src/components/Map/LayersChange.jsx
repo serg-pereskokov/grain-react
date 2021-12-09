@@ -4,7 +4,7 @@ import { layers } from './utils/layers'
 
 const LayersChange = () => (
     <LayersControl position='topleft'>
-        <LayersControl.BaseLayer checked name="Стандартная OpenStreetMap карта">
+        <LayersControl.BaseLayer name="Стандартная OpenStreetMap карта">
             <TileLayer url={layers('osm').layout} />
         </ LayersControl.BaseLayer>
         <LayersControl.BaseLayer name="Google карта">
@@ -13,7 +13,7 @@ const LayersChange = () => (
         <LayersControl.BaseLayer name="Google с рельефом">
             <TileLayer url={layers('googleTerran').layout} subdomains={layers('googleTerran').subdomains}  />
         </LayersControl.BaseLayer>
-        <LayersControl.BaseLayer name="Google спутник">
+        <LayersControl.BaseLayer checked name="Google спутник">
             <TileLayer url={layers('googleHybrid').layout} subdomains={layers('googleHybrid').subdomains} />
         </LayersControl.BaseLayer>
         <LayersControl.BaseLayer name="Google спутник без ярлыков">
