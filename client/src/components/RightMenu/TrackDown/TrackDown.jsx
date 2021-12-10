@@ -1,6 +1,7 @@
 import React from "react"
 import styles from './TrackDown.module.scss'
 import { TrackDownExplorer } from "./TrackDownExplorer/TrackDownExplorer"
+import { TrackDownTree } from "./TrackDownTree/TrackDownTree"
 import { connect } from 'react-redux'
 import { getDataGPS } from "../../../store/actions/actions"
 
@@ -26,6 +27,7 @@ const TrackDown = ({ getDataGPS, startDate, endDate }) => {
                 <i className='material-icons'>search</i>
             </div>
             <div className={styles.explorer}>
+                <TrackDownTree />
                 <TrackDownExplorer getDataState={dataState}/>
             </div>
         </div>

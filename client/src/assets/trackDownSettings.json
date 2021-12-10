@@ -1,4 +1,25 @@
-{
-    "agriculture": [686, 589, 661],
-    "cars": [525, 542]
-}
+[
+    {
+        "value": "all_technic",
+        "label": "Вся техника",
+        "children": [
+            {
+                "value": "agriculture",
+                "label": "СХ техника",
+                "children": [
+                    {"value": 686, "label": 686},
+                    {"value": 589, "label": 589},
+                    {"value": 661, "label": 661}
+                ]
+            },
+            {
+                "value": "cars",
+                "label": "Автомобили",
+                "children": [
+                    {"value": 525, "label": 525},
+                    {"value": 542, "label": 542}
+                ]
+            }
+        ]
+    }
+]
